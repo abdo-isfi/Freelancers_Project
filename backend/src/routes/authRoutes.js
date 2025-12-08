@@ -8,6 +8,7 @@ const {
 } = require("../controllers/authController");
 const { verifyToken } = require("../middlewares/authMiddleware");
 const { authValidation } = require("../middlewares/validationMiddleware");
+const { authLimiter } = require("../config/rateLimiter");
 
 const router = express.Router();
 
@@ -15,13 +16,13 @@ const router = express.Router();
  * @post /auth/register
  * Register a new user
  */
-router.post("/register", authValidation.register, register);
+router.post("/register", authLimiter, authValidation.register, register);
 
 /**
  * @post /auth/login
  * Login user
  */
-router.post("/login", authValidation.login, login);
+router.post("/login", authLimiter, authValidation.login, login);
 
 /**
  * @post /auth/refresh
@@ -42,3 +43,4 @@ router.post("/logout", authValidation.logout, logout);
 router.get("/me", verifyToken, getMe);
 
 module.exports = router;
+

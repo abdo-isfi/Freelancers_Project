@@ -1,16 +1,38 @@
-const logger = require("../loaders/logger");
+const logger = require('../loaders/logger');
+const responseFormatter = require('../utils/responseFormatter');
+const config = require('../config');
 
-function errorHandler(err, req, res, next) {
-  logger.error({ err }, "Unhandled error");
+const errorHandler = (err, req, res, next) => {
+  // Log the error
+  logger.error({
+    err: {
+      message: err.message,
+      stack: err.stack,
+      name: err.name,
+    },
+    req: {
+      method: req.method,
+      url: req.url,
+      id: req.id,
+    },
+  }, 'Error occurred');
 
-  const status = err.status || 500;
-  const message = err.message || "Internal server error";
+  // Determine status code
+  const statusCode = err.statusCode || err.status || 500;
 
-  res.status(status).json({
-    success: false,
-    message,
-    errors: err.errors || undefined,
-  });
-}
+  // Prepare error response
+  const message = err.message || 'Internal server error';
+  
+  // In development, include stack trace
+  const errorDetails = config.isDevelopment()
+    ? {
+        stack: err.stack,
+        name: err.name,
+      }
+    : null;
+
+  // Send formatted error response
+  return responseFormatter.error(res, message, statusCode, errorDetails);
+};
 
 module.exports = errorHandler;

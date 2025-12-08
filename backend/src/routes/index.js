@@ -8,13 +8,11 @@ const timeEntryRoutes = require("./timeEntryRoutes");
 const invoiceRoutes = require("./invoiceRoutes");
 const noteRoutes = require("./noteRoutes");
 const dashboardRoutes = require("./dashboardRoutes");
+const healthRoutes = require("./healthRoutes");
 
 const router = express.Router();
 
-router.get("/health", (req, res) => {
-  res.json({ status: "ok" });
-});
-
+router.use("/health", healthRoutes);
 router.use("/auth", authRoutes);
 router.use("/clients", clientRoutes);
 router.use("/projects", projectRoutes);
@@ -25,3 +23,4 @@ router.use("/notes", noteRoutes);
 router.use("/dashboard", dashboardRoutes);
 
 module.exports = router;
+

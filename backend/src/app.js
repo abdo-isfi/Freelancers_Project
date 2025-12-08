@@ -1,24 +1,33 @@
-const express = require("express");
-const cors = require("cors");
-const dotenv = require("dotenv");
-const routes = require("./routes");
-const errorHandler = require("./middlewares/errorHandler");
-const logger = require("./loaders/logger");
-
-dotenv.config();
+const express = require('express');
+const cors = require('cors');
+const { helmetConfig, corsOptions } = require('./config/security');
+const { apiLimiter } = require('./config/rateLimiter');
+const routes = require('./routes');
+const errorHandler = require('./middlewares/errorHandler');
+const { httpLogger } = require('./loaders/logger');
 
 const app = express();
 
-app.use(cors());
+// Security middleware
+app.use(helmetConfig);
+
+// CORS with whitelist
+app.use(cors(corsOptions));
+
+// Body parsing
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.use((req, res, next) => {
-  logger.info({ method: req.method, url: req.url }, "Incoming request");
-  next();
-});
+// HTTP request logging with request IDs
+app.use(httpLogger);
 
-app.use("/api", routes);
+// Global rate limiting
+app.use('/api', apiLimiter);
 
+// API routes
+app.use('/api', routes);
+
+// Error handling middleware (must be last)
 app.use(errorHandler);
 
 module.exports = app;

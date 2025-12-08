@@ -1,27 +1,39 @@
-require("dotenv").config();
+const config = require('./index');
 
 module.exports = {
   development: {
-    username: process.env.DB_USER || "root",
-    password: process.env.DB_PASSWORD || null,
-    database: process.env.DB_NAME || "freelancer_mgmt_dev",
-    host: process.env.DB_HOST || "127.0.0.1",
-    port: process.env.DB_PORT || 3306,
-    dialect: "mysql",
-    logging: false,
+    username: config.database.user,
+    password: config.database.password,
+    database: config.database.name,
+    host: config.database.host,
+    port: config.database.port,
+    dialect: 'mysql',
+    logging: config.isDevelopment() ? console.log : false,
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000,
+    },
   },
   test: {
-    dialect: "sqlite",
-    storage: process.env.TEST_DB_STORAGE || ":memory:",
+    dialect: 'sqlite',
+    storage: config.database.testStorage,
     logging: false,
   },
   production: {
-    username: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT || 3306,
-    dialect: "mysql",
+    username: config.database.user,
+    password: config.database.password,
+    database: config.database.name,
+    host: config.database.host,
+    port: config.database.port,
+    dialect: 'mysql',
     logging: false,
+    pool: {
+      max: 20,
+      min: 5,
+      acquire: 60000,
+      idle: 10000,
+    },
   },
 };
