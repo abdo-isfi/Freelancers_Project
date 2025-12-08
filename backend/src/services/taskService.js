@@ -1,0 +1,201 @@
+const { Task, Project } = require('../models');
+
+class TaskService {
+  /**
+   * Get all tasks for a project
+   */
+  async getTasksByProject(projectId, userId, { page = 1, limit = 10, status = null } = {}) {
+    const offset = (page - 1) * limit;
+
+    // Verify project belongs to user
+    const project = await Project.findOne({
+      where: { id: projectId, user_id: userId },
+    });
+
+    if (!project) {
+      const error = new Error('Project not found');
+      error.status = 404;
+      throw error;
+    }
+
+    const where = { project_id: projectId };
+    if (status) {
+      where.status = status;
+    }
+
+    const { count, rows } = await Task.findAndCountAll({
+      where,
+      offset,
+      limit,
+      order: [['priority', 'DESC'], ['due_date', 'ASC']],
+    });
+
+    return {
+      data: rows.map(this.formatTask),
+      pagination: {
+        total: count,
+        page: parseInt(page),
+        pages: Math.ceil(count / limit),
+        limit: parseInt(limit),
+      },
+    };
+  }
+
+  /**
+   * Get task by ID
+   */
+  async getTaskById(taskId, userId) {
+    const task = await Task.findByPk(taskId, {
+      include: [{
+        model: Project,
+        where: { user_id: userId },
+        attributes: ['id', 'name'],
+      }],
+    });
+
+    if (!task) {
+      const error = new Error('Task not found');
+      error.status = 404;
+      throw error;
+    }
+
+    return this.formatTask(task);
+  }
+
+  /**
+   * Create new task
+   */
+  async createTask(userId, {
+    projectId,
+    title,
+    description,
+    priority,
+    dueDate,
+    estimatedHours,
+  }) {
+    // Verify project belongs to user
+    const project = await Project.findOne({
+      where: { id: projectId, user_id: userId },
+    });
+
+    if (!project) {
+      const error = new Error('Project not found');
+      error.status = 404;
+      throw error;
+    }
+
+    const task = await Task.create({
+      project_id: projectId,
+      title,
+      description,
+      priority: priority || 'medium',
+      due_date: dueDate,
+      estimated_hours: estimatedHours,
+      status: 'todo',
+    });
+
+    return this.formatTask(task);
+  }
+
+  /**
+   * Update task
+   */
+  async updateTask(taskId, userId, updates) {
+    const task = await Task.findByPk(taskId, {
+      include: [{
+        model: Project,
+        where: { user_id: userId },
+      }],
+    });
+
+    if (!task) {
+      const error = new Error('Task not found');
+      error.status = 404;
+      throw error;
+    }
+
+    const mappedUpdates = {
+      title: updates.title,
+      description: updates.description,
+      status: updates.status,
+      priority: updates.priority,
+      due_date: updates.dueDate,
+      estimated_hours: updates.estimatedHours,
+    };
+
+    Object.keys(mappedUpdates).forEach((key) => {
+      if (mappedUpdates[key] !== undefined) {
+        task[key] = mappedUpdates[key];
+      }
+    });
+
+    await task.save();
+
+    return this.formatTask(task);
+  }
+
+  /**
+   * Update task status
+   */
+  async updateTaskStatus(taskId, userId, status) {
+    const task = await Task.findByPk(taskId, {
+      include: [{
+        model: Project,
+        where: { user_id: userId },
+      }],
+    });
+
+    if (!task) {
+      const error = new Error('Task not found');
+      error.status = 404;
+      throw error;
+    }
+
+    task.status = status;
+    await task.save();
+
+    return this.formatTask(task);
+  }
+
+  /**
+   * Delete task
+   */
+  async deleteTask(taskId, userId) {
+    const task = await Task.findByPk(taskId, {
+      include: [{
+        model: Project,
+        where: { user_id: userId },
+      }],
+    });
+
+    if (!task) {
+      const error = new Error('Task not found');
+      error.status = 404;
+      throw error;
+    }
+
+    await task.destroy();
+
+    return { message: 'Task deleted successfully' };
+  }
+
+  /**
+   * Format task response
+   */
+  formatTask(task) {
+    return {
+      id: task.id,
+      projectId: task.project_id,
+      title: task.title,
+      description: task.description,
+      status: task.status,
+      priority: task.priority,
+      dueDate: task.due_date,
+      estimatedHours: task.estimated_hours,
+      createdAt: task.created_at,
+      updatedAt: task.updated_at,
+    };
+  }
+}
+
+module.exports = new TaskService();
