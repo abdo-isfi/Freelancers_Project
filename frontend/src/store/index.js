@@ -3,6 +3,9 @@ import authReducer from './authSlice';
 import clientsReducer from './clientsSlice';
 import projectsReducer from './projectsSlice';
 import tasksReducer from './tasksSlice';
+import timeEntriesReducer from './timeEntriesSlice';
+import invoicesReducer from './invoicesSlice';
+import notesReducer from './notesSlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,7 +13,9 @@ export const store = configureStore({
     clients: clientsReducer,
     projects: projectsReducer,
     tasks: tasksReducer,
-    // More reducers will be added here
+    timeEntries: timeEntriesReducer,
+    invoices: invoicesReducer,
+    notes: notesReducer,
   },
   devTools: import.meta.env.DEV,
 });

@@ -1,13 +1,15 @@
+import { Provider } from 'react-redux';
 import { Toaster } from 'react-hot-toast';
+import store from './store';
 import AppRoutes from './routes/AppRoutes';
-import './index.css';
+import './App.css';
 
 function App() {
   return (
-    <>
-      <AppRoutes />
+    <Provider store={store}>
       <Toaster position="top-right" />
-    </>
+      <AppRoutes />
+    </Provider>
   );
 }
 

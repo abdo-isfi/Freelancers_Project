@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { LoginForm } from '../components/ui/login-form';
 import { SignupForm } from '../components/ui/signup-form';
 import { HeroImage } from '../components/ui/hero-image';
@@ -26,9 +26,10 @@ const registerSchema = yup.object({
 
 const AuthPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [isLoginView, setIsLoginView] = useState(true);
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.auth);
+  const { loading, error, isAuthenticated } = useSelector((state) => state.auth);
 
   // Initialize view based on URL
   useEffect(() => {
@@ -38,6 +39,13 @@ const AuthPage = () => {
       setIsLoginView(true);
     }
   }, [location.pathname]);
+
+  // Redirect if authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, navigate]);
 
   // Login Form Hooks
   const {

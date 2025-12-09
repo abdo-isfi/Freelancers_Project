@@ -5,6 +5,7 @@ import MainLayout from '../components/Layout/MainLayout';
 // Auth pages
 import AuthPage from '../pages/AuthPage';
 import HeroDemo from '../pages/HeroDemo';
+import SidebarDemo from '../pages/SidebarDemo';
 
 // Protected pages
 import DashboardPage from '../pages/DashboardPage';
@@ -60,6 +61,8 @@ function AppRoutes() {
 
           </Route>
         </Route>
+
+        <Route path="/sidebar-demo" element={<SidebarDemo />} />
 
         {/* 404 - Catch all */}
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
