@@ -15,6 +15,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { logout } from '../../store/authSlice';
 import { useAuth } from '../../hooks/useAuth';
+import { RetroGrid } from '../ui/hero-section-dark';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
@@ -37,7 +38,17 @@ function MainLayout() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <RetroGrid 
+          angle={65}
+          cellSize={60}
+          opacity={0.5}
+          lightLineColor="#4a4a4a"
+          darkLineColor="#2a2a2a"
+        />
+      </div>
+      <div className="relative z-10 flex min-h-screen">
       {/* Sidebar */}
       <div className="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
         <div className="flex flex-col flex-grow bg-primary-700 pt-5 pb-4 overflow-y-auto">
@@ -82,19 +93,19 @@ function MainLayout() {
       {/* Main content */}
       <div className="md:pl-64 flex flex-col flex-1">
         {/* Top header */}
-        <div className="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-white shadow">
+        <div className="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-black/20 backdrop-blur-xl border-b border-white/10 shadow-sm">
           <div className="flex-1 px-4 flex justify-end items-center">
             {/* User menu */}
             <Menu as="div" className="ml-3 relative">
               <div>
-                <Menu.Button className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                <Menu.Button className="max-w-xs bg-card flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
                   <span className="sr-only">Open user menu</span>
                   <div className="h-8 w-8 rounded-full bg-primary-600 flex items-center justify-center">
                     <span className="text-white font-medium">
                       {user?.firstName?.[0] || user?.email?.[0] || 'U'}
                     </span>
                   </div>
-                  <span className="ml-3 text-gray-700 text-sm font-medium hidden md:block">
+                  <span className="ml-3 text-foreground text-sm font-medium hidden md:block">
                     {user?.firstName || user?.email}
                   </span>
                 </Menu.Button>
@@ -108,14 +119,14 @@ function MainLayout() {
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
               >
-                <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-card ring-1 ring-black ring-opacity-5 focus:outline-none">
                   <Menu.Item>
                     {({ active }) => (
                       <Link
                         to="/settings"
                         className={`${
-                          active ? 'bg-gray-100' : ''
-                        } block px-4 py-2 text-sm text-gray-700`}
+                          active ? 'bg-accent' : ''
+                        } block px-4 py-2 text-sm text-foreground`}
                       >
                         Settings
                       </Link>
@@ -126,8 +137,8 @@ function MainLayout() {
                       <button
                         onClick={handleLogout}
                         className={`${
-                          active ? 'bg-gray-100' : ''
-                        } w-full text-left block px-4 py-2 text-sm text-gray-700`}
+                          active ? 'bg-accent' : ''
+                        } w-full text-left block px-4 py-2 text-sm text-foreground`}
                       >
                         <div className="flex items-center">
                           <ArrowRightOnRectangleIcon className="mr-2 h-5 w-5" />
@@ -146,6 +157,7 @@ function MainLayout() {
         <main className="flex-1">
           <Outlet />
         </main>
+      </div>
       </div>
     </div>
   );

@@ -5,6 +5,7 @@ import MainLayout from '../components/Layout/MainLayout';
 // Auth pages
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
+import HeroDemo from '../pages/HeroDemo';
 
 // Protected pages
 import DashboardPage from '../pages/DashboardPage';
@@ -26,11 +27,12 @@ function AppRoutes() {
         {/* Public routes */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/" element={<HeroDemo />} />
 
         {/* Protected routes with layout */}
         <Route element={<ProtectedRoute />}>
           <Route element={<MainLayout />}>
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+
             <Route path="/dashboard" element={<DashboardPage />} />
             
             {/* Clients */}

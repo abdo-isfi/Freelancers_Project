@@ -39,11 +39,11 @@ function Modal({ isOpen, onClose, title, children, size = 'md' }) {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className={`relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:p-6 ${sizes[size]}`}>
+              <Dialog.Panel className={`relative transform overflow-hidden rounded-lg bg-card px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:p-6 ${sizes[size]}`}>
                 <div className="absolute right-0 top-0 pr-4 pt-4">
                   <button
                     type="button"
-                    className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none"
+                    className="rounded-md bg-card text-muted-foreground hover:text-foreground focus:outline-none"
                     onClick={onClose}
                   >
                     <span className="sr-only">Close</span>
@@ -52,12 +52,12 @@ function Modal({ isOpen, onClose, title, children, size = 'md' }) {
                 </div>
                 
                 {title && (
-                  <Dialog.Title as="h3" className="text-lg font-semibold leading-6 text-gray-900 mb-4">
+                  <Dialog.Title as="h3" className="text-lg font-semibold leading-6 text-foreground mb-4">
                     {title}
                   </Dialog.Title>
                 )}
                 
-                <div>{children}</div>
+                <div className="text-foreground">{children}</div>
               </Dialog.Panel>
             </Transition.Child>
           </div>

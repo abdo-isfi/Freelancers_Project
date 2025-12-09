@@ -2,15 +2,17 @@ import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './authSlice';
 import clientsReducer from './clientsSlice';
 import projectsReducer from './projectsSlice';
+import tasksReducer from './tasksSlice';
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     clients: clientsReducer,
     projects: projectsReducer,
-    // More reducers will be added here (tasks, timeEntries, etc.)
+    tasks: tasksReducer,
+    // More reducers will be added here
   },
-  devTools: import.meta.env.DEV, // Enable Redux DevTools in development
+  devTools: import.meta.env.DEV,
 });
 
 export default store;
