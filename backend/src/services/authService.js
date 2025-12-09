@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { User, RefreshToken } = require('../models');
-const config = require('../config');
 
 class AuthService {
   /**
@@ -23,8 +22,8 @@ class AuthService {
    * Generate access token (JWT)
    */
   generateAccessToken(userId) {
-    return jwt.sign({ userId }, config.jwt.accessSecret, {
-      expiresIn: config.jwt.accessExpiresIn,
+    return jwt.sign({ userId }, process.env.JWT_SECRET || 'your-secret-key', {
+      expiresIn: process.env.JWT_EXPIRY || '15m',
     });
   }
 
@@ -32,8 +31,8 @@ class AuthService {
    * Generate refresh token (JWT)
    */
   generateRefreshToken(userId) {
-    return jwt.sign({ userId }, config.jwt.refreshSecret, {
-      expiresIn: config.jwt.refreshExpiresIn,
+    return jwt.sign({ userId }, process.env.JWT_REFRESH_SECRET || 'your-refresh-secret-key', {
+      expiresIn: process.env.JWT_REFRESH_EXPIRY || '7d',
     });
   }
 
@@ -42,7 +41,7 @@ class AuthService {
    */
   verifyAccessToken(token) {
     try {
-      return jwt.verify(token, config.jwt.accessSecret);
+      return jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
     } catch (error) {
       return null;
     }
@@ -53,7 +52,7 @@ class AuthService {
    */
   verifyRefreshToken(token) {
     try {
-      return jwt.verify(token, config.jwt.refreshSecret);
+      return jwt.verify(token, process.env.JWT_REFRESH_SECRET || 'your-refresh-secret-key');
     } catch (error) {
       return null;
     }

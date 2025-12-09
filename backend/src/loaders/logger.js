@@ -3,6 +3,7 @@ const pinoHttp = require('pino-http');
 const crypto = require('crypto');
 const config = require('../config');
 
+
 // Base logger instance
 const logger = pino({
   level: config.isDevelopment() ? 'debug' : 'info',
