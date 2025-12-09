@@ -5,7 +5,9 @@ import MainLayout from '../components/Layout/MainLayout';
 // Auth pages
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
+import AuthPage from '../pages/AuthPage';
 import HeroDemo from '../pages/HeroDemo';
+import { SignupFormDemo } from '../components/ui/signup-form-demo';
 
 // Protected pages
 import DashboardPage from '../pages/DashboardPage';
@@ -25,8 +27,8 @@ function AppRoutes() {
     <BrowserRouter>
       <Routes>
         {/* Public routes */}
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login" element={<AuthPage />} />
+        <Route path="/register" element={<AuthPage />} />
         <Route path="/" element={<HeroDemo />} />
 
         {/* Protected routes with layout */}
@@ -58,6 +60,9 @@ function AppRoutes() {
             
             {/* Settings */}
             <Route path="/settings" element={<SettingsPage />} />
+
+            {/* Demo */}
+            <Route path="/signup-demo" element={<SignupFormDemo />} />
           </Route>
         </Route>
 

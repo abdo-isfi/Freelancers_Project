@@ -37,6 +37,7 @@ function DashboardPage() {
       </div>
 
       {/* Quick Actions */}
+
       <div className="card">
         <h2 className="text-lg font-medium text-foreground mb-4">Quick Actions</h2>
         <div className="flex flex-wrap gap-3">
