@@ -23,7 +23,7 @@ const AppInput = (props) => {
       <div className="relative w-full">
         <input
           type="text"
-          className="peer relative z-10 border-2 border-[var(--color-border)] h-13 w-full rounded-md bg-[var(--color-surface)] px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-[var(--color-bg)] placeholder:font-medium text-[var(--color-text-primary)]"
+          className="peer relative z-10 border-2 border-[var(--color-border)] h-13 w-full rounded-md bg-[var(--color-surface)] px-4 font-medium outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-[var(--color-bg)] placeholder:font-medium text-white"
           placeholder={placeholder}
           onMouseMove={handleMouseMove}
           onMouseEnter={() => setIsHovering(true)}

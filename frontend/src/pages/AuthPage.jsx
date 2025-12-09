@@ -75,6 +75,18 @@ const AuthPage = () => {
     // window.history.pushState(null, '', isLogin ? '/login' : '/register');
   };
 
+  // Mouse hover effect logic
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePosition({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top
+    });
+  };
+
   return (
     <div className="h-screen w-full bg-[var(--color-bg)] flex items-center justify-center p-4 overflow-hidden">
       {/* Error Toast */}
@@ -91,11 +103,25 @@ const AuthPage = () => {
         )}
       </AnimatePresence>
 
-      <div className="card w-[95%] lg:w-[70%] md:w-[85%] h-[600px] relative flex overflow-hidden rounded-2xl shadow-2xl bg-[var(--color-surface)]">
+      <div 
+        className="card w-[95%] lg:w-[70%] md:w-[85%] h-[600px] relative flex overflow-hidden rounded-2xl shadow-2xl bg-[var(--color-surface)]"
+        onMouseMove={handleMouseMove}
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
+      >
+        <div
+          className={`absolute pointer-events-none w-[500px] h-[500px] bg-gradient-to-r from-purple-300/30 via-blue-300/30 to-pink-300/30 rounded-full blur-3xl transition-opacity duration-200 z-0 ${
+            isHovering ? 'opacity-100' : 'opacity-0'
+          }`}
+          style={{
+            transform: `translate(${mousePosition.x - 250}px, ${mousePosition.y - 250}px)`,
+            transition: 'transform 0.1s ease-out'
+          }}
+        />
         
         {/* Left Panel Content (Login Form) */}
         <motion.div
-          className="absolute top-0 left-0 w-full lg:w-1/2 h-full z-10 bg-[var(--color-surface)]"
+          className="absolute top-0 left-0 w-full lg:w-1/2 h-full z-10"
           initial={{ x: 0, opacity: 1 }}
           animate={{ 
             x: isLoginView ? 0 : "-100%",
@@ -108,13 +134,12 @@ const AuthPage = () => {
               register={loginRegister}
               errors={loginErrors}
               loading={loading}
-              onRegisterClick={() => toggleView(false)}
            />
         </motion.div>
 
         {/* Right Panel Content (Register Form) */}
         <motion.div
-          className="absolute top-0 right-0 w-full lg:w-1/2 h-full z-0 bg-[var(--color-surface)] flex items-center justify-center"
+          className="absolute top-0 right-0 w-full lg:w-1/2 h-full z-0 flex items-center justify-center"
           initial={{ opacity: 0 }}
           animate={{ 
             opacity: isLoginView ? 0 : 1 
@@ -144,7 +169,10 @@ const AuthPage = () => {
             duration: 0.6
           }}
         >
-          <HeroImage />
+          <HeroImage 
+            isLoginView={isLoginView} 
+            onToggle={() => toggleView(!isLoginView)} 
+          />
         </motion.div>
 
       </div>

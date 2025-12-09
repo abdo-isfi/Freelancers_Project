@@ -3,11 +3,8 @@ import ProtectedRoute from '../components/ProtectedRoute';
 import MainLayout from '../components/Layout/MainLayout';
 
 // Auth pages
-import LoginPage from '../pages/LoginPage';
-import RegisterPage from '../pages/RegisterPage';
 import AuthPage from '../pages/AuthPage';
 import HeroDemo from '../pages/HeroDemo';
-import { SignupFormDemo } from '../components/ui/signup-form-demo';
 
 // Protected pages
 import DashboardPage from '../pages/DashboardPage';
@@ -61,8 +58,6 @@ function AppRoutes() {
             {/* Settings */}
             <Route path="/settings" element={<SettingsPage />} />
 
-            {/* Demo */}
-            <Route path="/signup-demo" element={<SignupFormDemo />} />
           </Route>
         </Route>
 

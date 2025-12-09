@@ -158,4 +158,14 @@
   .card {
     @apply bg-white/5 backdrop-blur-xl text-card-foreground rounded-xl shadow-lg border border-white/10 p-6 hover:border-white/20 hover:bg-white/10 transition-all duration-200;
   }
+
+  /* Autofill override */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus, 
+  input:-webkit-autofill:active{
+      -webkit-box-shadow: 0 0 0 30px var(--color-surface) inset !important;
+      -webkit-text-fill-color: white !important;
+      transition: background-color 5000s ease-in-out 0s;
+  }
 }
