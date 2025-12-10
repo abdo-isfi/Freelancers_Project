@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { fetchClients, deleteClient } from '../store/clientsSlice';
 import { PlusIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Button from '../components/Common/Button';
@@ -11,6 +12,7 @@ import { formatDate } from '../utils/formatDate';
 import toast from 'react-hot-toast';
 
 function ClientsPage() {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { items: clients, loading, pagination } = useSelector((state) => state.clients);
   const [currentPage, setCurrentPage] = useState(1);
@@ -65,12 +67,12 @@ function ClientsPage() {
       {/* Header */}
       <div className="mb-6 flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Clients</h1>
-          <p className="mt-2 text-muted-foreground">Manage your client relationships</p>
+          <h1 className="text-3xl font-bold text-foreground">{t('clients')}</h1>
+          <p className="mt-2 text-muted-foreground">{t('manageClientRelationships')}</p>
         </div>
         <Button variant="primary" onClick={handleAddClient}>
           <PlusIcon className="h-5 w-5 mr-2" />
-          Add Client
+          {t('addClient')}
         </Button>
       </div>
 
@@ -78,12 +80,12 @@ function ClientsPage() {
       {clients.length === 0 ? (
         <div className="card">
           <EmptyState
-            title="No clients yet"
-            description="Get started by adding your first client."
+            title={t('noClientsYet')}
+            description={t('getStartedFirstClient')}
             action={
               <Button variant="primary" onClick={handleAddClient}>
                 <PlusIcon className="h-5 w-5 mr-2" />
-                Add Your First Client
+                {t('addFirstClient')}
               </Button>
             }
           />
@@ -95,22 +97,22 @@ function ClientsPage() {
               <thead className="bg-muted/50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    Name
+                    {t('clientName')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    Email
+                    {t('email')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    Phone
+                    {t('phone')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    Company
+                    {t('company')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    Created
+                    {t('date')}
                   </th>
                   <th className="px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    Actions
+                    {t('actions')}
                   </th>
                 </tr>
               </thead>

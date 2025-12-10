@@ -7,6 +7,7 @@ import { logout } from '../../store/authSlice';
 import { useAuth } from '../../hooks/useAuth';
 import { RetroGrid } from '../ui/hero-section-dark';
 import AppSidebar from './AppSidebar';
+import { MiniNavbar } from '../ui/mini-navbar';
 
 function MainLayout() {
   const dispatch = useDispatch();
@@ -29,6 +30,9 @@ function MainLayout() {
           darkLineColor="#2a2a2a"
         />
       </div>
+      
+      {/* Mini Floating Navbar */}
+      <MiniNavbar />
       
       <div className="relative z-10 flex min-h-screen">
         {/* New Sidebar */}

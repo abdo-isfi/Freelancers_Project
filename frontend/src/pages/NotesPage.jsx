@@ -1,33 +1,35 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { PlusIcon, DocumentTextIcon } from '@heroicons/react/24/outline';
 import Button from '../components/Common/Button';
 import EmptyState from '../components/Common/EmptyState';
 
 function NotesPage() {
+  const { t } = useTranslation();
   const [notes] = useState([]);
 
   return (
     <div className="p-6">
       <div className="mb-6 flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Notes</h1>
-          <p className="mt-2 text-gray-600">Keep track of important information</p>
+          <h1 className="text-3xl font-bold text-gray-900">{t('notes')}</h1>
+          <p className="mt-2 text-gray-600">{t('organizeYourNotes')}</p>
         </div>
         <Button variant="primary">
           <PlusIcon className="h-5 w-5 mr-2" />
-          Add Note
+          {t('addNote')}
         </Button>
       </div>
 
       <div className="card">
         <EmptyState
           icon={DocumentTextIcon}
-          title="No notes yet"
-          description="Create notes to keep track of important information."
+          title={t('noNotesYet')}
+          description={t('getStartedFirstNote')}
           action={
             <Button variant="primary">
               <PlusIcon className="h-5 w-5 mr-2" />
-              Create Your First Note
+              {t('createFirstNote')}
             </Button>
           }
         />

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { PlayIcon, PauseIcon, StopIcon } from '@heroicons/react/24/solid';
 import Button from '../Common/Button';
 import Select from '../Common/Select';
@@ -7,6 +8,7 @@ import { startTimer, stopTimer, setActiveTimer, updateTimerDuration } from '../.
 import { showSuccess, showError } from '../../utils/toast';
 
 function TimerWidget() {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { activeTimer } = useSelector((state) => state.timeEntries);
   const { items: projects } = useSelector((state) => state.projects);
@@ -132,34 +134,34 @@ function TimerWidget() {
           {formatTime(duration)}
         </h2>
         <p className="text-muted-foreground">
-          {isRunning ? 'Timer running...' : activeTimer ? 'Timer paused' : 'No active timer'}
+          {isRunning ? 'Timer running...' : activeTimer ? 'Timer paused' : t('noActiveTimer')}
         </p>
       </div>
 
       {!activeTimer ? (
         <div className="space-y-4">
           <Select
-            label="Project"
+            label={t('project')}
             value={selectedProject}
             onChange={(e) => setSelectedProject(e.target.value)}
             options={projectOptions}
-            placeholder="Select a project"
+            placeholder={t('selectProject')}
           />
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">
-              Description (optional)
+              {t('descriptionOptional')}
             </label>
             <input
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="What are you working on?"
+              placeholder={t('whatAreYouWorkingOn')}
               className="w-full px-4 py-2.5 rounded-lg border border-border bg-white text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
             />
           </div>
           <Button variant="primary" size="lg" onClick={handleStart} className="w-full">
             <PlayIcon className="h-6 w-6 mr-2" />
-            Start Timer
+            {t('startTimer')}
           </Button>
         </div>
       ) : (

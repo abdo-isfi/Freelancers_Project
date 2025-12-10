@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import Button from '../components/Common/Button';
 import LoadingSpinner from '../components/Common/LoadingSpinner';
@@ -14,6 +15,7 @@ import { fetchInvoices } from '../store/invoicesSlice';
 import * as dashboardAPI from '../api/dashboardAPI';
 
 function DashboardPage() {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [stats, setStats] = useState(null);
@@ -113,8 +115,11 @@ function DashboardPage() {
       const project = projects.find((p) => p.id === entry.projectId);
       activities.push({
         type: 'time_entry',
-        title: 'Time tracked',
-        description: `${entry.duration?.toFixed(1)}h on ${project?.name || 'Unknown project'}`,
+        title: t('timeTracked'),
+        description: t('timeTrackedDesc', { 
+          duration: entry.duration?.toFixed(1), 
+          project: project?.name || t('unknownProject') 
+        }),
         timestamp: entry.date,
       });
     });
@@ -123,8 +128,11 @@ function DashboardPage() {
     invoices.slice(0, 2).forEach((invoice) => {
       activities.push({
         type: 'invoice',
-        title: 'Invoice created',
-        description: `Invoice #${invoice.invoiceNumber} for $${invoice.total?.toFixed(2)}`,
+        title: t('invoiceCreated'),
+        description: t('invoiceCreatedDesc', { 
+          number: invoice.invoiceNumber, 
+          amount: invoice.total?.toFixed(2) 
+        }),
         timestamp: invoice.date,
       });
     });
@@ -144,34 +152,34 @@ function DashboardPage() {
   return (
     <div className="page-container">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
-        <p className="mt-2 text-muted-foreground">Welcome back! Here's your overview.</p>
+        <h1 className="text-3xl font-bold text-foreground">{t('dashboard')}</h1>
+        <p className="mt-2 text-muted-foreground">{t('welcome')}</p>
       </div>
 
       {/* Stats Grid */}
       <div className="stats-grid mb-8">
         <div className="card">
-          <p className="text-sm font-medium text-muted-foreground">Total Clients</p>
+          <p className="text-sm font-medium text-muted-foreground">{t('totalClients')}</p>
           <p className="mt-2 text-3xl font-semibold text-foreground">
             {stats?.totalClients || clients.length}
           </p>
           <p className="mt-1 text-sm text-green-500">
-            {clients.length > 0 ? `+${Math.min(2, clients.length)} this month` : 'No clients yet'}
+            {clients.length > 0 ? `+${Math.min(2, clients.length)} this month` : t('noClientsYet')}
           </p>
         </div>
 
         <div className="card">
-          <p className="text-sm font-medium text-muted-foreground">Active Projects</p>
+          <p className="text-sm font-medium text-muted-foreground">{t('activeProjects')}</p>
           <p className="mt-2 text-3xl font-semibold text-foreground">
             {stats?.activeProjects || projects.filter((p) => p.status === 'active').length}
           </p>
           <p className="mt-1 text-sm text-blue-500">
-            {projects.length} total projects
+            {t('noActiveProjects')}
           </p>
         </div>
 
         <div className="card">
-          <p className="text-sm font-medium text-muted-foreground">Hours This Week</p>
+          <p className="text-sm font-medium text-muted-foreground">{t('hoursThisWeek')}</p>
           <p className="mt-2 text-3xl font-semibold text-foreground">
             {stats?.hoursThisWeek?.toFixed(1) || '0.0'}
           </p>
@@ -179,35 +187,35 @@ function DashboardPage() {
         </div>
 
         <div className="card">
-          <p className="text-sm font-medium text-muted-foreground">Unbilled Amount</p>
+          <p className="text-sm font-medium text-muted-foreground">{t('unbilledAmount')}</p>
           <p className="mt-2 text-3xl font-semibold text-foreground">
             ${stats?.unbilledAmount?.toFixed(2) || '0.00'}
           </p>
           <p className="mt-1 text-sm text-yellow-500">
-            {invoices.filter((i) => i.status === 'unpaid').length} invoices pending
+            {t('noInvoicesPending')}
           </p>
         </div>
       </div>
 
       {/* Quick Actions */}
       <div className="card mb-8">
-        <h2 className="text-lg font-medium text-foreground mb-4">Quick Actions</h2>
+        <h2 className="text-lg font-medium text-foreground mb-4">{t('quickActions')}</h2>
         <div className="flex flex-wrap gap-3">
           <Button variant="primary" onClick={() => navigate('/clients')}>
             <PlusIcon className="h-5 w-5 mr-2" />
-            New Client
+            {t('newClient')}
           </Button>
           <Button variant="primary" onClick={() => navigate('/projects')}>
             <PlusIcon className="h-5 w-5 mr-2" />
-            New Project
+            {t('newProject')}
           </Button>
-          <Button variant="secondary" onClick={() => navigate('/invoices')}>
+          <Button variant="primary" onClick={() => navigate('/invoices')}>
             <PlusIcon className="h-5 w-5 mr-2" />
-            New Invoice
+            {t('newInvoice')}
           </Button>
           <Button variant="secondary" onClick={() => navigate('/time-tracking')}>
             <PlusIcon className="h-5 w-5 mr-2" />
-            Track Time
+            {t('trackTime')}
           </Button>
         </div>
       </div>
@@ -215,19 +223,19 @@ function DashboardPage() {
       {/* Charts */}
       <div className="charts-grid mb-8">
         <div className="card">
-          <h2 className="text-lg font-medium text-foreground mb-4">Revenue Overview</h2>
+          <h2 className="text-lg font-medium text-foreground mb-4">{t('revenueOverview')}</h2>
           <RevenueChart data={prepareRevenueData()} />
         </div>
 
         <div className="card">
-          <h2 className="text-lg font-medium text-foreground mb-4">Time by Project</h2>
+          <h2 className="text-lg font-medium text-foreground mb-4">{t('timeByProject')}</h2>
           <TimeByProjectChart data={prepareTimeByProjectData()} />
         </div>
       </div>
 
       {/* Recent Activity */}
       <div className="card">
-        <h2 className="text-lg font-medium text-foreground mb-4">Recent Activity</h2>
+        <h2 className="text-lg font-medium text-foreground mb-4">{t('recentActivity')}</h2>
         <RecentActivity activities={prepareRecentActivities()} />
       </div>
     </div>

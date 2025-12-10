@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { 
   LayoutDashboard, 
   Users, 
@@ -8,21 +9,22 @@ import {
   Clock, 
   FileText, 
   StickyNote,
-  Menu,
-  Settings
+  Menu
 } from 'lucide-react';
 
-const navItems = [
-    { name: 'Dashboard', href: '/dashboard', icon: <LayoutDashboard className="w-5 h-5" /> },
-    { name: 'Clients', href: '/clients', icon: <Users className="w-5 h-5" /> },
-    { name: 'Projects', href: '/projects', icon: <Briefcase className="w-5 h-5" /> },
-    { name: 'Tasks', href: '/tasks', icon: <CheckSquare className="w-5 h-5" /> },
-    { name: 'Time Tracking', href: '/time-tracking', icon: <Clock className="w-5 h-5" /> },
-    { name: 'Invoices', href: '/invoices', icon: <FileText className="w-5 h-5" /> },
-    { name: 'Notes', href: '/notes', icon: <StickyNote className="w-5 h-5" /> },
-];
-
 const AppSidebar = ({ user }) => {
+  const { t } = useTranslation();
+  
+  const navItems = [
+    { name: t('dashboard'), href: '/dashboard', icon: <LayoutDashboard className="w-5 h-5" /> },
+    { name: t('clients'), href: '/clients', icon: <Users className="w-5 h-5" /> },
+    { name: t('projects'), href: '/projects', icon: <Briefcase className="w-5 h-5" /> },
+    { name: t('tasks'), href: '/tasks', icon: <CheckSquare className="w-5 h-5" /> },
+    { name: t('timeTracking'), href: '/time-tracking', icon: <Clock className="w-5 h-5" /> },
+    { name: t('invoices'), href: '/invoices', icon: <FileText className="w-5 h-5" /> },
+    { name: t('notes'), href: '/notes', icon: <StickyNote className="w-5 h-5" /> },
+  ];
+
   return (
     <aside className="hidden md:flex w-64 flex-col fixed inset-y-0 z-20 bg-white/5 backdrop-blur-xl border-r border-white/10">
         {/* Header */}
@@ -54,30 +56,9 @@ const AppSidebar = ({ user }) => {
                 </NavLink>
             ))}
         </nav>
-
-        {/* User Profile / Footer */}
-        <div className="p-4 border-t border-white/10">
-            <NavLink 
-                to="/settings"
-                className={({ isActive }) => `
-                    flex items-center gap-3 p-3 rounded-xl transition-colors mb-2
-                    ${isActive ? 'bg-white/10' : 'hover:bg-white/5'}
-                `}
-            >
-                <div className="h-10 w-10 rounded-full bg-indigo-600 flex items-center justify-center border-2 border-indigo-500/30 text-white font-semibold">
-                    {user?.firstName?.[0] || user?.email?.[0] || 'U'}
-                </div>
-                <div className="overflow-hidden">
-                    <p className="font-semibold text-white text-sm truncate">
-                        {user?.firstName ? `${user.firstName} ${user.lastName || ''}` : 'User'}
-                    </p>
-                    <p className="text-xs text-gray-400 truncate">{user?.email}</p>
-                </div>
-                <Settings className="w-4 h-4 text-gray-500 ml-auto" />
-            </NavLink>
-        </div>
     </aside>
   );
 };
 
 export default AppSidebar;
+

@@ -3,7 +3,14 @@ import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
 /**
- * Base Modal Component
+ * Dark-themed Modal Component matching Login/Register forms
+ * Features:
+ * - Dark background (bg-gray-900)
+ * - Backdrop blur effect
+ * - Rounded corners (rounded-xl)
+ * - Subtle shadow
+ * - Close button in top-right
+ * - Responsive and accessible
  */
 function Modal({ isOpen, onClose, title, children, size = 'md' }) {
   const sizes = {
@@ -16,6 +23,7 @@ function Modal({ isOpen, onClose, title, children, size = 'md' }) {
   return (
     <Transition.Root show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-50" onClose={onClose}>
+        {/* Backdrop with blur effect - matches login page aesthetic */}
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -25,7 +33,10 @@ function Modal({ isOpen, onClose, title, children, size = 'md' }) {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+          <div 
+            className="fixed inset-0 bg-black/60 backdrop-blur-md transition-all" 
+            style={{ backdropFilter: 'blur(8px)' }}
+          />
         </Transition.Child>
 
         <div className="fixed inset-0 z-10 overflow-y-auto">
@@ -39,11 +50,15 @@ function Modal({ isOpen, onClose, title, children, size = 'md' }) {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className={`relative transform overflow-hidden rounded-lg bg-card px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:p-6 ${sizes[size]}`}>
-                <div className="absolute right-0 top-0 pr-4 pt-4">
+              {/* Modal Panel - Dark theme matching login forms */}
+              <Dialog.Panel 
+                className={`relative transform overflow-hidden rounded-xl bg-[var(--color-surface)] border-2 border-[var(--color-border)] px-6 pb-6 pt-5 text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:p-8 ${sizes[size]}`}
+              >
+                {/* Close button - top right */}
+                <div className="absolute right-0 top-0 pr-4 pt-4 z-10">
                   <button
                     type="button"
-                    className="rounded-md bg-card text-muted-foreground hover:text-foreground focus:outline-none"
+                    className="rounded-md bg-transparent text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-text-primary)] focus:ring-offset-2 focus:ring-offset-[var(--color-surface)] transition-colors duration-200"
                     onClick={onClose}
                   >
                     <span className="sr-only">Close</span>
@@ -51,13 +66,20 @@ function Modal({ isOpen, onClose, title, children, size = 'md' }) {
                   </button>
                 </div>
                 
+                {/* Title */}
                 {title && (
-                  <Dialog.Title as="h3" className="text-lg font-semibold leading-6 text-foreground mb-4">
+                  <Dialog.Title 
+                    as="h3" 
+                    className="text-2xl font-bold leading-6 text-[var(--color-heading)] mb-6 pr-8"
+                  >
                     {title}
                   </Dialog.Title>
                 )}
                 
-                <div className="text-foreground">{children}</div>
+                {/* Content */}
+                <div className="text-[var(--color-text-primary)]">
+                  {children}
+                </div>
               </Dialog.Panel>
             </Transition.Child>
           </div>
@@ -68,3 +90,4 @@ function Modal({ isOpen, onClose, title, children, size = 'md' }) {
 }
 
 export default Modal;
+

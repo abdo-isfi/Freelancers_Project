@@ -1,6 +1,9 @@
+import { useTranslation } from 'react-i18next';
 import { ClockIcon, DocumentTextIcon, BriefcaseIcon } from '@heroicons/react/24/outline';
 
 function RecentActivity({ activities = [] }) {
+  const { t } = useTranslation();
+
   const getIcon = (type) => {
     switch (type) {
       case 'time_entry':
@@ -19,18 +22,18 @@ function RecentActivity({ activities = [] }) {
     const activityDate = new Date(date);
     const diffInHours = Math.floor((now - activityDate) / (1000 * 60 * 60));
 
-    if (diffInHours < 1) return 'Just now';
-    if (diffInHours < 24) return `${diffInHours}h ago`;
+    if (diffInHours < 1) return t('justNow');
+    if (diffInHours < 24) return t('hoursAgo', { count: diffInHours });
     const diffInDays = Math.floor(diffInHours / 24);
-    if (diffInDays === 1) return 'Yesterday';
-    if (diffInDays < 7) return `${diffInDays} days ago`;
+    if (diffInDays === 1) return t('yesterday');
+    if (diffInDays < 7) return t('daysAgo', { count: diffInDays });
     return activityDate.toLocaleDateString();
   };
 
   if (activities.length === 0) {
     return (
       <div className="text-center py-8">
-        <p className="text-muted-foreground">No recent activity</p>
+        <p className="text-muted-foreground">{t('noRecentActivity')}</p>
       </div>
     );
   }

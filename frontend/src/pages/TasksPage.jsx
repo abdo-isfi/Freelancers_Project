@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { fetchTasks, deleteTask } from '../store/tasksSlice';
-import { PlusIcon, PencilIcon, TrashIcon, ClipboardDocumentListIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, PencilIcon, TrashIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import Button from '../components/Common/Button';
 import EmptyState from '../components/Common/EmptyState';
 import LoadingSpinner from '../components/Common/LoadingSpinner';
@@ -35,6 +36,7 @@ const priorityLabels = {
 };
 
 function TasksPage() {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { items: tasks, loading, pagination } = useSelector((state) => state.tasks);
   const [currentPage, setCurrentPage] = useState(1);
@@ -89,12 +91,12 @@ function TasksPage() {
       {/* Header */}
       <div className="mb-6 flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Tasks</h1>
-          <p className="mt-2 text-muted-foreground">Manage your project tasks</p>
+          <h1 className="text-3xl font-bold text-foreground">{t('tasks')}</h1>
+          <p className="mt-2 text-muted-foreground">{t('manageYourTasks')}</p>
         </div>
         <Button variant="primary" onClick={handleAddTask}>
           <PlusIcon className="h-5 w-5 mr-2" />
-          Add Task
+          {t('addTask')}
         </Button>
       </div>
 
@@ -102,13 +104,13 @@ function TasksPage() {
       {tasks.length === 0 ? (
         <div className="card">
           <EmptyState
-            icon={ClipboardDocumentListIcon}
-            title="No tasks yet"
-            description="Create your first task to get started."
+            icon={CheckCircleIcon}
+            title={t('noTasksYet')}
+            description={t('getStartedFirstTask')}
             action={
               <Button variant="primary" onClick={handleAddTask}>
                 <PlusIcon className="h-5 w-5 mr-2" />
-                Create Your First Task
+                {t('createFirstTask')}
               </Button>
             }
           />

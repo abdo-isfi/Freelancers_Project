@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import Button from '../components/Common/Button';
 import Modal from '../components/Common/Modal';
@@ -12,6 +13,7 @@ import { fetchProjects } from '../store/projectsSlice';
 import { fetchTasks } from '../store/tasksSlice';
 
 function TimeTrackingPage() {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filterProject, setFilterProject] = useState('');
@@ -26,7 +28,7 @@ function TimeTrackingPage() {
   }, [dispatch]);
 
   const projectOptions = [
-    { value: '', label: 'All Projects' },
+    { value: '', label: t('allProjects') || 'All Projects' },
     ...projects.map((project) => ({
       value: project.id.toString(),
       label: project.name,
@@ -43,12 +45,12 @@ function TimeTrackingPage() {
     <div className="page-container">
       <div className="mb-6 flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Time Tracking</h1>
-          <p className="mt-2 text-muted-foreground">Track time spent on projects and tasks</p>
+          <h1 className="text-3xl font-bold text-foreground">{t('timeTracking')}</h1>
+          <p className="mt-2 text-muted-foreground">{t('trackYourTime')}</p>
         </div>
         <Button variant="primary" onClick={() => setIsModalOpen(true)}>
           <PlusIcon className="h-5 w-5 mr-2" />
-          Add Manual Entry
+          {t('addTimeEntry')}
         </Button>
       </div>
 
@@ -60,15 +62,15 @@ function TimeTrackingPage() {
       {/* Stats */}
       <div className="stats-grid mb-6">
         <div className="card">
-          <p className="text-sm text-muted-foreground">Total Entries</p>
+          <p className="text-sm text-muted-foreground">{t('total')} Entries</p>
           <p className="mt-1 text-2xl font-semibold text-foreground">{filteredEntries.length}</p>
         </div>
         <div className="card">
-          <p className="text-sm text-muted-foreground">Total Hours</p>
+          <p className="text-sm text-muted-foreground">{t('total')} {t('hours')}</p>
           <p className="mt-1 text-2xl font-semibold text-foreground">{totalHours.toFixed(1)}h</p>
         </div>
         <div className="card">
-          <p className="text-sm text-muted-foreground">This Week</p>
+          <p className="text-sm text-muted-foreground">{t('thisWeek')}</p>
           <p className="mt-1 text-2xl font-semibold text-foreground">
             {timeEntries
               .filter((entry) => {
@@ -84,7 +86,7 @@ function TimeTrackingPage() {
           </p>
         </div>
         <div className="card">
-          <p className="text-sm text-muted-foreground">Average/Day</p>
+          <p className="text-sm text-muted-foreground">{t('averagePerDay')}</p>
           <p className="mt-1 text-2xl font-semibold text-foreground">
             {filteredEntries.length > 0 ? (totalHours / 7).toFixed(1) : '0.0'}h
           </p>
@@ -96,7 +98,7 @@ function TimeTrackingPage() {
         <div className="flex items-center gap-4">
           <div className="flex-1">
             <Select
-              label="Filter by Project"
+              label={t('filterByProject')}
               value={filterProject}
               onChange={(e) => setFilterProject(e.target.value)}
               options={projectOptions}
@@ -104,7 +106,7 @@ function TimeTrackingPage() {
           </div>
           {filterProject && (
             <Button variant="ghost" onClick={() => setFilterProject('')} className="mt-7">
-              Clear Filter
+              {t('clearFilters')}
             </Button>
           )}
         </div>
@@ -112,7 +114,7 @@ function TimeTrackingPage() {
 
       {/* Time Entries Table */}
       <div className="card">
-        <h2 className="text-lg font-semibold text-foreground mb-4">Time Entries</h2>
+        <h2 className="text-lg font-semibold text-foreground mb-4">{t('timeEntries')}</h2>
         <TimeEntryTable entries={filteredEntries} />
       </div>
 

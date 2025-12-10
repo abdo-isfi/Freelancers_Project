@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { fetchProjects, deleteProject } from '../store/projectsSlice';
 import { PlusIcon, PencilIcon, TrashIcon, BriefcaseIcon } from '@heroicons/react/24/outline';
 import Button from '../components/Common/Button';
@@ -26,6 +27,7 @@ const statusLabels = {
 };
 
 function ProjectsPage() {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { items: projects, loading, pagination } = useSelector((state) => state.projects);
   const [currentPage, setCurrentPage] = useState(1);
@@ -80,12 +82,12 @@ function ProjectsPage() {
       {/* Header */}
       <div className="mb-6 flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Projects</h1>
-          <p className="mt-2 text-muted-foreground">Manage your client projects</p>
+          <h1 className="text-3xl font-bold text-foreground">{t('projects')}</h1>
+          <p className="mt-2 text-muted-foreground">{t('manageClientProjects')}</p>
         </div>
         <Button variant="primary" onClick={handleAddProject}>
           <PlusIcon className="h-5 w-5 mr-2" />
-          Add Project
+          {t('addProject')}
         </Button>
       </div>
 
@@ -94,12 +96,12 @@ function ProjectsPage() {
         <div className="card">
           <EmptyState
             icon={BriefcaseIcon}
-            title="No projects yet"
-            description="Get started by creating your first project."
+            title={t('noProjectsYet')}
+            description={t('getStartedFirstProject')}
             action={
               <Button variant="primary" onClick={handleAddProject}>
                 <PlusIcon className="h-5 w-5 mr-2" />
-                Create Your First Project
+                {t('createFirstProject')}
               </Button>
             }
           />
@@ -111,22 +113,22 @@ function ProjectsPage() {
               <thead className="bg-muted/50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    Project Name
+                    {t('projectName')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    Client
+                    {t('client')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    Status
+                    {t('status')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    Budget
+                    {t('budget')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    Start Date
+                    {t('date')}
                   </th>
                   <th className="px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    Actions
+                    {t('actions')}
                   </th>
                 </tr>
               </thead>
