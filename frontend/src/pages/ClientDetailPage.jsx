@@ -16,6 +16,7 @@ import EmptyState from '../components/Common/EmptyState';
 import { fetchClients, deleteClient } from '../store/clientsSlice';
 import { fetchProjects } from '../store/projectsSlice';
 import { fetchInvoices } from '../store/invoicesSlice';
+import { AnimatedText } from '../components/ui/animated-shiny-text';
 
 function ClientDetailPage() {
   const { id } = useParams();
@@ -84,20 +85,15 @@ function ClientDetailPage() {
     <div className="page-container">
       {/* Header */}
       <div className="mb-6">
-        <Button
-          variant="ghost"
-          onClick={() => navigate('/clients')}
-          className="mb-4"
-        >
-          <ArrowLeftIcon className="h-5 w-5 mr-2" />
-          Back to Clients
-        </Button>
+        <div className="flex justify-between items-center mb-4">
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/clients')}
+          >
+            <ArrowLeftIcon className="h-5 w-5 mr-2" />
+            Back to Clients
+          </Button>
 
-        <div className="flex justify-between items-start">
-          <div>
-            <h1 className="text-3xl font-bold text-foreground">{client.name}</h1>
-            <p className="mt-2 text-muted-foreground">{client.company}</p>
-          </div>
           <div className="flex gap-2">
             <Button variant="secondary">
               <PencilIcon className="h-5 w-5 mr-2" />
@@ -108,6 +104,15 @@ function ClientDetailPage() {
               Delete
             </Button>
           </div>
+        </div>
+
+        <div className="text-center">
+          <AnimatedText 
+            text={client.name} 
+            textClassName="text-5xl font-bold text-foreground"
+            className="justify-center py-2"
+          />
+          <p className="mt-2 text-muted-foreground">{client.company}</p>
         </div>
       </div>
 

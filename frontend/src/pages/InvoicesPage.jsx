@@ -9,6 +9,7 @@ import InvoiceForm from '../components/Forms/InvoiceForm';
 import InvoiceTable from '../components/Tables/InvoiceTable';
 import { fetchInvoices, setFilters } from '../store/invoicesSlice';
 import { fetchClients } from '../store/clientsSlice';
+import { AnimatedText } from '../components/ui/animated-shiny-text';
 
 function InvoicesPage() {
   const { t } = useTranslation();
@@ -58,15 +59,21 @@ function InvoicesPage() {
 
   return (
     <div className="page-container">
-      <div className="mb-6 flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">{t('invoices')}</h1>
+      <div className="mb-[5px] mt-8 flex flex-col gap-4">
+        <div className="text-center w-full">
+          <AnimatedText 
+            text={t('invoices')} 
+            textClassName="text-5xl font-bold text-foreground"
+            className="justify-center py-2"
+          />
           <p className="mt-2 text-muted-foreground">{t('manageInvoices')}</p>
         </div>
-        <Button variant="primary" onClick={() => setIsModalOpen(true)}>
-          <PlusIcon className="h-5 w-5 mr-2" />
-          {t('newInvoice')}
-        </Button>
+        <div className="w-full flex justify-end">
+          <Button variant="primary" onClick={() => setIsModalOpen(true)}>
+            <PlusIcon className="h-5 w-5 mr-2" />
+            {t('newInvoice')}
+          </Button>
+        </div>
       </div>
 
       {/* Stats */}

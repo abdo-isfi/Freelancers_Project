@@ -10,6 +10,7 @@ import Pagination from '../components/Common/Pagination';
 import ClientFormModal from '../components/Forms/ClientFormModal';
 import { formatDate } from '../utils/formatDate';
 import toast from 'react-hot-toast';
+import { AnimatedText } from '../components/ui/animated-shiny-text';
 
 function ClientsPage() {
   const { t } = useTranslation();
@@ -65,15 +66,21 @@ function ClientsPage() {
   return (
     <div className="p-6">
       {/* Header */}
-      <div className="mb-6 flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">{t('clients')}</h1>
+      <div className="mb-[5px] mt-8 flex flex-col gap-4">
+        <div className="text-center w-full">
+          <AnimatedText 
+            text={t('clients')} 
+            textClassName="text-5xl font-bold text-foreground"
+            className="justify-center py-2"
+          />
           <p className="mt-2 text-muted-foreground">{t('manageClientRelationships')}</p>
         </div>
-        <Button variant="primary" onClick={handleAddClient}>
-          <PlusIcon className="h-5 w-5 mr-2" />
-          {t('addClient')}
-        </Button>
+        <div className="w-full flex justify-end">
+          <Button variant="primary" onClick={handleAddClient}>
+            <PlusIcon className="h-5 w-5 mr-2" />
+            {t('addClient')}
+          </Button>
+        </div>
       </div>
 
       {/* Content */}

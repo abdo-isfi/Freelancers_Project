@@ -13,6 +13,7 @@ import { fetchProjects } from '../store/projectsSlice';
 import { fetchTimeEntries } from '../store/timeEntriesSlice';
 import { fetchInvoices } from '../store/invoicesSlice';
 import * as dashboardAPI from '../api/dashboardAPI';
+import { AnimatedText } from '../components/ui/animated-shiny-text';
 
 function DashboardPage() {
   const { t } = useTranslation();
@@ -151,8 +152,12 @@ function DashboardPage() {
 
   return (
     <div className="page-container">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-foreground">{t('dashboard')}</h1>
+      <div className="mb-6 mt-8 text-center">
+        <AnimatedText 
+          text={t('dashboard')} 
+          textClassName="text-5xl font-bold text-foreground"
+          className="justify-center py-2"
+        />
         <p className="mt-2 text-muted-foreground">{t('welcome')}</p>
       </div>
 

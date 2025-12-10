@@ -9,7 +9,8 @@ import {
   Clock, 
   FileText, 
   StickyNote,
-  Menu
+  Menu,
+  
 } from 'lucide-react';
 
 const AppSidebar = ({ user }) => {

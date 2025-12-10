@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { LogOut } from 'lucide-react';
+import { LogOut, Settings } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -71,6 +71,15 @@ export function MiniNavbar() {
           
           {/* Language Toggle */}
           <LanguageToggle />
+
+          {/* Settings Button */}
+          <button 
+            onClick={() => navigate('/settings')}
+            className="p-2 sm:p-2.5 border border-[#333] bg-[rgba(31,31,31,0.62)] text-gray-300 rounded-full hover:border-gray-500 hover:text-white transition-colors duration-200 flex items-center justify-center"
+            title={t('settings')}
+          >
+            <Settings className="w-4 h-4" />
+          </button>
           
           {/* Logout Button */}
           <button 

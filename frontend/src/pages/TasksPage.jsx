@@ -10,6 +10,7 @@ import Pagination from '../components/Common/Pagination';
 import TaskFormModal from '../components/Forms/TaskFormModal';
 import { formatDate } from '../utils/formatDate';
 import toast from 'react-hot-toast';
+import { AnimatedText } from '../components/ui/animated-shiny-text';
 
 const statusColors = {
   todo: 'bg-gray-100 text-gray-800',
@@ -89,15 +90,21 @@ function TasksPage() {
   return (
     <div className="p-6">
       {/* Header */}
-      <div className="mb-6 flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">{t('tasks')}</h1>
+      <div className="mb-[5px] mt-8 flex flex-col gap-4">
+        <div className="text-center w-full">
+          <AnimatedText 
+            text={t('tasks')} 
+            textClassName="text-5xl font-bold text-foreground"
+            className="justify-center py-2"
+          />
           <p className="mt-2 text-muted-foreground">{t('manageYourTasks')}</p>
         </div>
-        <Button variant="primary" onClick={handleAddTask}>
-          <PlusIcon className="h-5 w-5 mr-2" />
-          {t('addTask')}
-        </Button>
+        <div className="w-full flex justify-end">
+          <Button variant="primary" onClick={handleAddTask}>
+            <PlusIcon className="h-5 w-5 mr-2" />
+            {t('addTask')}
+          </Button>
+        </div>
       </div>
 
       {/* Content */}

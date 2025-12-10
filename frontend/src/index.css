@@ -181,7 +181,7 @@
   /* Stats grid - better spacing on desktop */
   .stats-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(200px, 280px));
+    grid-template-columns: repeat(4, 1fr);
     gap: 1.5rem;
   }
 

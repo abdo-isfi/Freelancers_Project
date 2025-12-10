@@ -16,6 +16,7 @@ import { fetchProjects, deleteProject } from '../store/projectsSlice';
 import { fetchTasks } from '../store/tasksSlice';
 import { fetchTimeEntries } from '../store/timeEntriesSlice';
 import { fetchInvoices } from '../store/invoicesSlice';
+import { AnimatedText } from '../components/ui/animated-shiny-text';
 
 function ProjectDetailPage() {
   const { id } = useParams();
@@ -91,20 +92,15 @@ function ProjectDetailPage() {
     <div className="page-container">
       {/* Header */}
       <div className="mb-6">
-        <Button
-          variant="ghost"
-          onClick={() => navigate('/projects')}
-          className="mb-4"
-        >
-          <ArrowLeftIcon className="h-5 w-5 mr-2" />
-          Back to Projects
-        </Button>
+        <div className="flex justify-between items-center mb-4">
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/projects')}
+          >
+            <ArrowLeftIcon className="h-5 w-5 mr-2" />
+            Back to Projects
+          </Button>
 
-        <div className="flex justify-between items-start">
-          <div>
-            <h1 className="text-3xl font-bold text-foreground">{project.name}</h1>
-            <p className="mt-2 text-muted-foreground">{project.description}</p>
-          </div>
           <div className="flex gap-2">
             <Button variant="secondary">
               <PencilIcon className="h-5 w-5 mr-2" />
@@ -115,6 +111,15 @@ function ProjectDetailPage() {
               Delete
             </Button>
           </div>
+        </div>
+
+        <div className="text-center">
+          <AnimatedText 
+            text={project.name} 
+            textClassName="text-5xl font-bold text-foreground"
+            className="justify-center py-2"
+          />
+          <p className="mt-2 text-muted-foreground">{project.description}</p>
         </div>
       </div>
 
