@@ -5,7 +5,9 @@ class ProjectService {
    * Get all projects for a user
    */
   async getAllProjects(userId, { page = 1, limit = 10, status = null } = {}) {
-    const offset = (page - 1) * limit;
+    const pageNum = parseInt(page, 10);
+    const limitNum = parseInt(limit, 10);
+    const offset = (pageNum - 1) * limitNum;
     const where = { user_id: userId };
 
     if (status) {
@@ -16,7 +18,7 @@ class ProjectService {
       where,
       include: [{ model: Client, attributes: ['id', 'name'] }],
       offset,
-      limit,
+      limit: limitNum,
       order: [['created_at', 'DESC']],
     });
 

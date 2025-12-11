@@ -1,0 +1,212 @@
+[2025-12-11T10:52:36.418Z] ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''20'' at line 1
+URL: /api/projects?page=1&limit=20&sort=createdAt&order=DESC
+Stack: Error
+    at Query.run (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/dialects/mysql/query.js:52:25)
+    at /home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async MySQLQueryInterface.select (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Project.findAll (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async Promise.all (index 1)
+    at async Project.findAndCountAll (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/model.js:1322:27)
+    at async ProjectService.getAllProjects (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/services/projectService.js:15:29)
+    at async getProjects (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/controllers/projectController.js:11:20)
+
+[2025-12-11T10:52:36.447Z] ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''20'' at line 1
+URL: /api/invoices?page=1&limit=20
+Stack: Error
+    at Query.run (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/dialects/mysql/query.js:52:25)
+    at /home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async MySQLQueryInterface.select (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Invoice.findAll (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async Promise.all (index 1)
+    at async Invoice.findAndCountAll (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/model.js:1322:27)
+    at async InvoiceService.getInvoices (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/services/invoiceService.js:15:29)
+    at async getInvoices (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/controllers/invoiceController.js:11:20)
+
+[2025-12-11T10:52:36.475Z] ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''20'' at line 1
+URL: /api/time-entries?page=1&limit=20
+Stack: Error
+    at Query.run (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/dialects/mysql/query.js:52:25)
+    at /home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async MySQLQueryInterface.select (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async TimeEntry.findAll (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async Promise.all (index 1)
+    at async TimeEntry.findAndCountAll (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/model.js:1322:27)
+    at async TimeEntryService.getTimeEntries (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/services/timeEntryService.js:15:29)
+    at async getTimeEntries (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/controllers/timeEntryController.js:11:20)
+
+[2025-12-11T10:52:36.502Z] ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''20'' at line 1
+URL: /api/projects?page=1&limit=20&sort=createdAt&order=DESC
+Stack: Error
+    at Query.run (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/dialects/mysql/query.js:52:25)
+    at /home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async MySQLQueryInterface.select (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Project.findAll (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async Promise.all (index 1)
+    at async Project.findAndCountAll (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/model.js:1322:27)
+    at async ProjectService.getAllProjects (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/services/projectService.js:15:29)
+    at async getProjects (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/controllers/projectController.js:11:20)
+
+[2025-12-11T10:52:36.552Z] ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''20'' at line 1
+URL: /api/invoices?page=1&limit=20
+Stack: Error
+    at Query.run (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/dialects/mysql/query.js:52:25)
+    at /home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async MySQLQueryInterface.select (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Invoice.findAll (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async Promise.all (index 1)
+    at async Invoice.findAndCountAll (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/model.js:1322:27)
+    at async InvoiceService.getInvoices (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/services/invoiceService.js:15:29)
+    at async getInvoices (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/controllers/invoiceController.js:11:20)
+
+[2025-12-11T10:52:36.568Z] ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''20'' at line 1
+URL: /api/time-entries?page=1&limit=20
+Stack: Error
+    at Query.run (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/dialects/mysql/query.js:52:25)
+    at /home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async MySQLQueryInterface.select (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async TimeEntry.findAll (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async Promise.all (index 1)
+    at async TimeEntry.findAndCountAll (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/model.js:1322:27)
+    at async TimeEntryService.getTimeEntries (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/services/timeEntryService.js:15:29)
+    at async getTimeEntries (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/controllers/timeEntryController.js:11:20)
+
+[2025-12-11T10:52:36.652Z] ERROR: Unknown column 'Note.is_pinned' in 'order clause'
+URL: /api/dashboard/summary
+Stack: Error
+    at Query.run (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/dialects/mysql/query.js:52:25)
+    at /home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async MySQLQueryInterface.select (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Note.findAll (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async Promise.all (index 1)
+    at async Note.findAndCountAll (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/model.js:1322:27)
+    at async NoteService.getNotes (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/services/noteService.js:15:29)
+    at async getNotes (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/controllers/dashboardController.js:11:20)
+
+[2025-12-11T10:52:36.675Z] ERROR: Unknown column 'Note.is_pinned' in 'order clause'
+URL: /api/dashboard/summary
+Stack: Error
+    at Query.run (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/dialects/mysql/query.js:52:25)
+    at /home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async MySQLQueryInterface.select (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Note.findAll (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async Promise.all (index 1)
+    at async Note.findAndCountAll (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/model.js:1322:27)
+    at async NoteService.getNotes (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/services/noteService.js:15:29)
+    at async getNotes (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/controllers/dashboardController.js:11:20)
+
+[2025-12-11T10:54:30.298Z] ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''20'' at line 1
+URL: /api/invoices?page=1&limit=20
+Stack: Error
+    at Query.run (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/dialects/mysql/query.js:52:25)
+    at /home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async MySQLQueryInterface.select (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Invoice.findAll (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async Promise.all (index 1)
+    at async Invoice.findAndCountAll (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/model.js:1322:27)
+    at async InvoiceService.getInvoices (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/services/invoiceService.js:15:29)
+    at async getInvoices (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/controllers/invoiceController.js:11:20)
+
+[2025-12-11T10:54:30.317Z] ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''20'' at line 1
+URL: /api/time-entries?page=1&limit=20
+Stack: Error
+    at Query.run (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/dialects/mysql/query.js:52:25)
+    at /home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async MySQLQueryInterface.select (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async TimeEntry.findAll (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async Promise.all (index 1)
+    at async TimeEntry.findAndCountAll (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/model.js:1322:27)
+    at async TimeEntryService.getTimeEntries (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/services/timeEntryService.js:15:29)
+    at async getTimeEntries (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/controllers/timeEntryController.js:11:20)
+
+[2025-12-11T10:54:30.377Z] ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''20'' at line 1
+URL: /api/invoices?page=1&limit=20
+Stack: Error
+    at Query.run (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/dialects/mysql/query.js:52:25)
+    at /home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async MySQLQueryInterface.select (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async Invoice.findAll (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async Promise.all (index 1)
+    at async Invoice.findAndCountAll (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/model.js:1322:27)
+    at async InvoiceService.getInvoices (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/services/invoiceService.js:15:29)
+    at async getInvoices (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/controllers/invoiceController.js:11:20)
+
+[2025-12-11T10:54:30.384Z] ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''20'' at line 1
+URL: /api/time-entries?page=1&limit=20
+Stack: Error
+    at Query.run (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/dialects/mysql/query.js:52:25)
+    at /home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async MySQLQueryInterface.select (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async TimeEntry.findAll (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/model.js:1140:21)
+    at async Promise.all (index 1)
+    at async TimeEntry.findAndCountAll (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/sequelize/lib/model.js:1322:27)
+    at async TimeEntryService.getTimeEntries (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/services/timeEntryService.js:15:29)
+    at async getTimeEntries (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/controllers/timeEntryController.js:11:20)
+
+[2025-12-11T10:55:33.155Z] ERROR: Project ID is required
+URL: /api/tasks?page=1&limit=20&sort=createdAt&order=DESC
+Stack: Error: Project ID is required
+    at getTasks (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/controllers/taskController.js:12:21)
+    at Layer.handleRequest (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/lib/layer.js:152:17)
+    at next (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/lib/route.js:117:3)
+    at handle (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/lib/layer.js:152:17)
+    at /home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/index.js:295:15
+    at processParams (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/index.js:582:12)
+    at next (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/index.js:291:5)
+    at verifyToken (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/middlewares/authMiddleware.js:31:5)
+
+[2025-12-11T10:55:33.168Z] ERROR: Project ID is required
+URL: /api/tasks?page=1&limit=20&sort=createdAt&order=DESC
+Stack: Error: Project ID is required
+    at getTasks (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/controllers/taskController.js:12:21)
+    at Layer.handleRequest (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/lib/layer.js:152:17)
+    at next (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/lib/route.js:117:3)
+    at handle (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/lib/layer.js:152:17)
+    at /home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/index.js:295:15
+    at processParams (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/index.js:582:12)
+    at next (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/index.js:291:5)
+    at verifyToken (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/middlewares/authMiddleware.js:31:5)
+
+[2025-12-11T10:55:33.861Z] ERROR: Project ID is required
+URL: /api/tasks?page=1&limit=20&sort=createdAt&order=DESC
+Stack: Error: Project ID is required
+    at getTasks (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/controllers/taskController.js:12:21)
+    at Layer.handleRequest (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/lib/layer.js:152:17)
+    at next (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/lib/route.js:117:3)
+    at handle (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/lib/layer.js:152:17)
+    at /home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/index.js:295:15
+    at processParams (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/index.js:582:12)
+    at next (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/index.js:291:5)
+    at verifyToken (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/middlewares/authMiddleware.js:31:5)
+
+[2025-12-11T10:55:33.875Z] ERROR: Project ID is required
+URL: /api/tasks?page=1&limit=20&sort=createdAt&order=DESC
+Stack: Error: Project ID is required
+    at getTasks (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/controllers/taskController.js:12:21)
+    at Layer.handleRequest (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/lib/layer.js:152:17)
+    at next (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/lib/route.js:117:3)
+    at handle (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/lib/layer.js:152:17)
+    at /home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/index.js:295:15
+    at processParams (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/index.js:582:12)
+    at next (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/node_modules/router/index.js:291:5)
+    at verifyToken (/home/abdo-isfi/Desktop/Freelancers/ISFI Abderrahmane/backend/src/middlewares/authMiddleware.js:31:5)
+

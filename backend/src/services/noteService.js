@@ -5,7 +5,9 @@ class NoteService {
    * Get all notes for a user
    */
   async getNotes(userId, { page = 1, limit = 10, projectId = null } = {}) {
-    const offset = (page - 1) * limit;
+    const pageNum = parseInt(page, 10);
+    const limitNum = parseInt(limit, 10);
+    const offset = (pageNum - 1) * limitNum;
     const where = { user_id: userId };
 
     if (projectId) {
@@ -15,7 +17,7 @@ class NoteService {
     const { count, rows } = await Note.findAndCountAll({
       where,
       offset,
-      limit,
+      limit: limitNum,
       order: [['is_pinned', 'DESC'], ['created_at', 'DESC']],
     });
 

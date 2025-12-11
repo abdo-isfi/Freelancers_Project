@@ -29,6 +29,16 @@ module.exports = (sequelize) => {
         type: DataTypes.TEXT,
         allowNull: true,
       },
+      color: {
+        type: DataTypes.STRING(20),
+        allowNull: true,
+        defaultValue: 'yellow',
+      },
+      is_pinned: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
     },
     {
       tableName: "notes",

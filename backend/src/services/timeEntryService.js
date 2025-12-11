@@ -5,7 +5,9 @@ class TimeEntryService {
    * Get all time entries for a user
    */
   async getTimeEntries(userId, { page = 1, limit = 10, projectId = null } = {}) {
-    const offset = (page - 1) * limit;
+    const pageNum = parseInt(page, 10);
+    const limitNum = parseInt(limit, 10);
+    const offset = (pageNum - 1) * limitNum;
     const where = { user_id: userId };
 
     if (projectId) {
@@ -19,7 +21,7 @@ class TimeEntryService {
         { model: Task, attributes: ['id', 'title'] },
       ],
       offset,
-      limit,
+      limit: limitNum,
       order: [['start_time', 'DESC']],
     });
 

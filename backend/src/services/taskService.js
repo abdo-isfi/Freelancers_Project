@@ -5,28 +5,37 @@ class TaskService {
    * Get all tasks for a project
    */
   async getTasksByProject(projectId, userId, { page = 1, limit = 10, status = null } = {}) {
-    const offset = (page - 1) * limit;
+    const pageNum = parseInt(page, 10);
+    const limitNum = parseInt(limit, 10);
+    const offset = (pageNum - 1) * limitNum;
 
-    // Verify project belongs to user
-    const project = await Project.findOne({
-      where: { id: projectId, user_id: userId },
-    });
-
-    if (!project) {
-      const error = new Error('Project not found');
-      error.status = 404;
-      throw error;
-    }
-
-    const where = { project_id: projectId };
+    const where = {};
     if (status) {
       where.status = status;
+    }
+    if (projectId) {
+      where.project_id = projectId;
+      // Verify project belongs to user
+      const project = await Project.findOne({
+        where: { id: projectId, user_id: userId },
+      });
+
+      if (!project) {
+        const error = new Error('Project not found');
+        error.status = 404;
+        throw error;
+      }
     }
 
     const { count, rows } = await Task.findAndCountAll({
       where,
+      include: [{
+        model: Project,
+        where: { user_id: userId }, // Ensure tasks belong to user's projects
+        attributes: ['id', 'name']
+      }],
       offset,
-      limit,
+      limit: limitNum,
       order: [['priority', 'DESC'], ['due_date', 'ASC']],
     });
 
@@ -34,9 +43,9 @@ class TaskService {
       data: rows.map(this.formatTask),
       pagination: {
         total: count,
-        page: parseInt(page),
-        pages: Math.ceil(count / limit),
-        limit: parseInt(limit),
+        page: pageNum,
+        pages: Math.ceil(count / limitNum),
+        limit: limitNum,
       },
     };
   }

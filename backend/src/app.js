@@ -16,6 +16,7 @@ app.use(cors(corsOptions));
 
 // Body parsing
 app.use(express.json());
+app.disable('etag');
 app.use(express.urlencoded({ extended: true }));
 
 // HTTP request logging with request IDs

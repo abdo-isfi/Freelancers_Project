@@ -8,11 +8,12 @@ const getTasks = async (req, res, next) => {
     const userId = req.userId;
     const { projectId, page, limit, status } = req.query;
 
-    if (!projectId) {
-      const error = new Error('Project ID is required');
-      error.status = 400;
-      throw error;
-    }
+    // Project ID is optional now
+    // if (!projectId) {
+    //   const error = new Error('Project ID is required');
+    //   error.status = 400;
+    //   throw error;
+    // }
 
     const result = await taskService.getTasksByProject(projectId, userId, { page, limit, status });
 
