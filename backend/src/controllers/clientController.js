@@ -46,16 +46,15 @@ const getClientById = async (req, res, next) => {
 const createClient = async (req, res, next) => {
   try {
     const userId = req.userId;
-    const { name, email, phone, companyName, address, taxId, currency } = req.body;
+    const { name, email, phone, company, address, website } = req.body;
 
     const client = await clientService.createClient(userId, {
       name,
       email,
       phone,
-      companyName,
+      company,
       address,
-      taxId,
-      currency,
+      website,
     });
 
     res.status(201).json({

@@ -24,10 +24,12 @@ const errorHandler = (err, req, res, next) => {
   const message = err.message || 'Internal server error';
   
   // In development, include stack trace
-  const errorDetails = config.isDevelopment()
+  // In development, include stack trace
+  const errorDetails = true
     ? {
         stack: err.stack,
         name: err.name,
+        errors: err.errors, // Include validation errors if any
       }
     : null;
 

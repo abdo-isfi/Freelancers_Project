@@ -5,7 +5,7 @@ import api from './axios';
  */
 
 // Get dashboard summary stats
-export const getDashboardSummary = async () => {
+export const getDashboardStats = async () => {
   const response = await api.get('/dashboard/summary');
   return response.data;
 };

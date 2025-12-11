@@ -7,7 +7,12 @@ const {
   deleteClient,
 } = require("../controllers/clientController");
 
+const { verifyToken } = require("../middlewares/authMiddleware");
+
 const router = express.Router();
+
+// Apply auth middleware to all routes
+router.use(verifyToken);
 
 router.get("/", getClients);
 router.get("/:id", getClientById);

@@ -8,7 +8,11 @@ const {
   deleteTask,
 } = require("../controllers/taskController");
 
+const { verifyToken } = require("../middlewares/authMiddleware");
+
 const router = express.Router();
+
+router.use(verifyToken);
 
 router.get("/", getTasks);
 router.get("/:id", getTaskById);

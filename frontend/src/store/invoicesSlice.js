@@ -136,8 +136,10 @@ const invoicesSlice = createSlice({
       })
       .addCase(fetchInvoices.fulfilled, (state, action) => {
         state.loading = false;
-        state.items = action.payload.items || action.payload;
-        state.pagination = action.payload.pagination || state.pagination;
+        // API returns { success: true, data: { data: [], pagination: {} } }
+        const responseData = action.payload.data || action.payload;
+        state.items = responseData.data || responseData.items || [];
+        state.pagination = responseData.pagination || state.pagination;
       })
       .addCase(fetchInvoices.rejected, (state, action) => {
         state.loading = false;

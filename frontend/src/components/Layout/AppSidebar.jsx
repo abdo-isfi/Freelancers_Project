@@ -10,8 +10,8 @@ import {
   FileText, 
   StickyNote,
   Menu,
-  
 } from 'lucide-react';
+import { ThemeToggle } from '../ui/theme-toggle';
 
 const AppSidebar = ({ user }) => {
   const { t } = useTranslation();
@@ -27,14 +27,14 @@ const AppSidebar = ({ user }) => {
   ];
 
   return (
-    <aside className="hidden md:flex w-64 flex-col fixed inset-y-0 z-20 bg-white/5 backdrop-blur-xl border-r border-white/10">
+    <aside className="hidden md:flex w-64 flex-col fixed inset-y-0 z-20 bg-background/80 backdrop-blur-xl border-r border-border transition-colors duration-300">
         {/* Header */}
-        <div className="h-16 flex items-center px-6 border-b border-white/10">
+        <div className="h-16 flex items-center px-6 border-b border-border">
             <div className="flex items-center gap-2">
-                <div className="p-1.5 bg-indigo-500/20 rounded-lg">
-                    <Menu className="w-5 h-5 text-indigo-400" />
+                <div className="p-1.5 bg-primary/10 rounded-lg">
+                    <Menu className="w-5 h-5 text-primary" />
                 </div>
-                <span className="text-lg font-bold text-white tracking-tight">Freelancer Hub</span>
+                <span className="text-lg font-bold text-foreground tracking-tight">Freelancer Hub</span>
             </div>
         </div>
 
@@ -47,8 +47,8 @@ const AppSidebar = ({ user }) => {
                     className={({ isActive }) => `
                         w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200
                         ${isActive 
-                            ? 'bg-indigo-500/20 text-indigo-300 shadow-lg shadow-indigo-500/10 border border-indigo-500/20' 
-                            : 'text-gray-400 hover:bg-white/5 hover:text-gray-200 border border-transparent'
+                            ? 'bg-primary/10 text-primary shadow-sm border border-primary/20' 
+                            : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground border border-transparent'
                         }
                     `}
                 >

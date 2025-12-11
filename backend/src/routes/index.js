@@ -9,6 +9,7 @@ const invoiceRoutes = require("./invoiceRoutes");
 const noteRoutes = require("./noteRoutes");
 const dashboardRoutes = require("./dashboardRoutes");
 const healthRoutes = require("./healthRoutes");
+const itemRoutes = require("./itemRoutes");
 
 const router = express.Router();
 
@@ -21,6 +22,7 @@ router.use("/time-entries", timeEntryRoutes);
 router.use("/invoices", invoiceRoutes);
 router.use("/notes", noteRoutes);
 router.use("/dashboard", dashboardRoutes);
+router.use("/items", itemRoutes);
 
 module.exports = router;
 

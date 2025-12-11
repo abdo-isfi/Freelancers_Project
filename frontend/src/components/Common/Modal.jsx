@@ -50,15 +50,15 @@ function Modal({ isOpen, onClose, title, children, size = 'md' }) {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              {/* Modal Panel - Dark theme matching login forms */}
+              {/* Modal Panel */}
               <Dialog.Panel 
-                className={`relative transform overflow-hidden rounded-xl bg-[var(--color-surface)] border-2 border-[var(--color-border)] px-6 pb-6 pt-5 text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:p-8 ${sizes[size]}`}
+                className={`relative transform overflow-hidden rounded-xl bg-card border border-border px-6 pb-6 pt-5 text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:p-8 ${sizes[size]}`}
               >
                 {/* Close button - top right */}
                 <div className="absolute right-0 top-0 pr-4 pt-4 z-10">
                   <button
                     type="button"
-                    className="rounded-md bg-transparent text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-text-primary)] focus:ring-offset-2 focus:ring-offset-[var(--color-surface)] transition-colors duration-200"
+                    className="rounded-md bg-transparent text-muted-foreground hover:text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-card transition-colors duration-200"
                     onClick={onClose}
                   >
                     <span className="sr-only">Close</span>
@@ -70,14 +70,14 @@ function Modal({ isOpen, onClose, title, children, size = 'md' }) {
                 {title && (
                   <Dialog.Title 
                     as="h3" 
-                    className="text-2xl font-bold leading-6 text-[var(--color-heading)] mb-6 pr-8"
+                    className="text-2xl font-bold leading-6 text-foreground mb-6 pr-8"
                   >
                     {title}
                   </Dialog.Title>
                 )}
                 
                 {/* Content */}
-                <div className="text-[var(--color-text-primary)]">
+                <div className="text-foreground">
                   {children}
                 </div>
               </Dialog.Panel>

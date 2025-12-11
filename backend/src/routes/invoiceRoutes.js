@@ -8,7 +8,11 @@ const {
   downloadInvoice,
 } = require("../controllers/invoiceController");
 
+const { verifyToken } = require("../middlewares/authMiddleware");
+
 const router = express.Router();
+
+router.use(verifyToken);
 
 router.get("/", getInvoices);
 router.get("/:id", getInvoiceById);

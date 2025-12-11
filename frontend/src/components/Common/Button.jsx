@@ -23,10 +23,10 @@ function Button({
   const baseStyles = 'group/button relative inline-flex flex-row items-center justify-center gap-2 overflow-hidden rounded-lg font-medium transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100';
   
   const variants = {
-    primary: 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-blue-500/50',
-    secondary: 'bg-[var(--color-border)] text-white hover:bg-[var(--color-muted-surface)] hover:shadow-[var(--color-text-primary)]/30',
-    danger: 'bg-red-600 text-white hover:bg-red-700 hover:shadow-red-500/50',
-    ghost: 'bg-transparent text-[var(--color-text-primary)] hover:bg-[var(--color-muted-surface)] border border-[var(--color-border)]',
+    primary: 'bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-primary/20',
+    secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:shadow-secondary/20',
+    danger: 'bg-destructive text-destructive-foreground hover:bg-destructive/90 hover:shadow-destructive/20',
+    ghost: 'bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground border border-transparent hover:border-border',
   };
 
   const sizes = {

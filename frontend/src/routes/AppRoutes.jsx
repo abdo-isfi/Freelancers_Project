@@ -19,6 +19,7 @@ import InvoicesPage from '../pages/InvoicesPage';
 import InvoiceDetailPage from '../pages/InvoiceDetailPage';
 import NotesPage from '../pages/NotesPage';
 import SettingsPage from '../pages/SettingsPage';
+import ItemManager from '../components/ItemManager';
 
 function AppRoutes() {
   return (
@@ -27,7 +28,6 @@ function AppRoutes() {
         {/* Public routes */}
         <Route path="/login" element={<AuthPage />} />
         <Route path="/register" element={<AuthPage />} />
-        <Route path="/" element={<HeroDemo />} />
 
         {/* Protected routes with layout */}
         <Route element={<ProtectedRoute />}>
@@ -58,6 +58,9 @@ function AppRoutes() {
             
             {/* Settings */}
             <Route path="/settings" element={<SettingsPage />} />
+            
+            {/* Items Demo */}
+            <Route path="/items" element={<ItemManager />} />
 
           </Route>
         </Route>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import clsx from 'clsx';
+import { HelpCircle } from 'lucide-react';
 
 /**
  * Dark-themed Input Component matching Login/Register forms
@@ -10,17 +11,20 @@ import clsx from 'clsx';
  * - White text
  * - Hover gradient effect
  * - Rounded corners
+ * - Optional Tooltip
  */
 function Input({
   label,
   error,
   helperText,
+  tooltip,
   className,
   required,
   ...props
 }) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
 
   const handleMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -32,26 +36,48 @@ function Input({
 
   return (
     <div className="w-full">
-      {/* Label - matches login form style */}
+      {/* Label */}
       {label && (
-        <label className="block mb-2 text-sm font-medium text-[var(--color-text-primary)]">
-          {label}
-          {required && <span className="text-red-500 ml-1">*</span>}
-        </label>
+        <div className="flex items-center gap-2 mb-2">
+          <label className="text-sm font-medium text-foreground">
+            {label}
+            {required && <span className="text-destructive ml-1">*</span>}
+          </label>
+          {tooltip && (
+            <div 
+              className="relative flex items-center"
+              onMouseEnter={() => setShowTooltip(true)}
+              onMouseLeave={() => setShowTooltip(false)}
+            >
+              <HelpCircle className="w-4 h-4 text-muted-foreground cursor-help hover:text-foreground transition-colors" />
+              
+              {/* Tooltip Popup */}
+              {showTooltip && (
+                <div className="absolute left-full ml-2 bottom-0 w-48 p-2 bg-popover border border-border rounded-md shadow-lg z-50 animate-in fade-in zoom-in-95 duration-200">
+                  <p className="text-xs text-popover-foreground leading-relaxed">
+                    {tooltip}
+                  </p>
+                  {/* Arrow */}
+                  <div className="absolute left-0 bottom-2 -translate-x-1/2 w-2 h-2 bg-popover border-l border-b border-border rotate-45 transform" />
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       )}
       
       {/* Input wrapper for hover effect */}
       <div className="relative w-full">
         <input
           className={clsx(
-            // Base styles matching login form
-            'peer relative z-10 border-2 border-[var(--color-border)] h-13 w-full rounded-md bg-[var(--color-surface)] px-4 py-2.5 font-medium outline-none drop-shadow-sm transition-all duration-200 ease-in-out',
+            // Base styles
+            'peer relative z-10 border border-input h-10 w-full rounded-md bg-background px-4 py-2 font-medium outline-none shadow-sm transition-all duration-200 ease-in-out',
             // Focus state
-            'focus:bg-[var(--color-bg)] focus:border-[var(--color-text-primary)] focus:ring-2 focus:ring-[var(--color-text-primary)]/20',
+            'focus:ring-2 focus:ring-ring focus:border-input',
             // Text and placeholder
-            'text-white placeholder:font-medium placeholder:text-[var(--color-text-secondary)]',
+            'text-foreground placeholder:font-medium placeholder:text-muted-foreground',
             // Error state
-            error && 'border-red-500 focus:border-red-500 focus:ring-red-500/20',
+            error && 'border-destructive focus:ring-destructive/30',
             className
           )}
           onMouseMove={handleMouseMove}
@@ -81,12 +107,12 @@ function Input({
       
       {/* Error message */}
       {error && (
-        <p className="mt-1.5 text-sm text-red-500">{error}</p>
+        <p className="mt-1.5 text-sm text-destructive">{error}</p>
       )}
       
       {/* Helper text */}
       {helperText && !error && (
-        <p className="mt-1.5 text-sm text-[var(--color-text-secondary)]">{helperText}</p>
+        <p className="mt-1.5 text-sm text-muted-foreground">{helperText}</p>
       )}
     </div>
   );

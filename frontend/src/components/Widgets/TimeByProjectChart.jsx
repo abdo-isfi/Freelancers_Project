@@ -13,7 +13,7 @@ function TimeByProjectChart({ data = [] }) {
   };
 
   return (
-    <div className="w-full h-80">
+    <div className="w-full h-80 min-h-[320px]">
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie

@@ -16,7 +16,17 @@ const clientSchema = yup.object({
   phone: yup.string(),
   company: yup.string(),
   address: yup.string(),
-  website: yup.string().url('Must be a valid URL'),
+  website: yup
+    .string()
+    .trim()
+    .transform((value) => {
+      if (!value) return value;
+      if (value.startsWith('http://') || value.startsWith('https://')) {
+        return value;
+      }
+      return `https://${value}`;
+    })
+    .url('Must be a valid URL'),
 });
 
 function ClientFormModal({ isOpen, onClose, client = null }) {
@@ -77,6 +87,7 @@ function ClientFormModal({ isOpen, onClose, client = null }) {
           {...register('name')}
           error={errors.name?.message}
           required
+          tooltip="Enter the full name of the client or contact person."
         />
 
         <Input
@@ -85,6 +96,7 @@ function ClientFormModal({ isOpen, onClose, client = null }) {
           {...register('email')}
           error={errors.email?.message}
           required
+          tooltip="Enter a valid email address for communication."
         />
 
         <Input
@@ -92,18 +104,21 @@ function ClientFormModal({ isOpen, onClose, client = null }) {
           type="tel"
           {...register('phone')}
           error={errors.phone?.message}
+          tooltip="Enter the client's phone number (optional)."
         />
 
         <Input
           label="Company"
           {...register('company')}
           error={errors.company?.message}
+          tooltip="Enter the client's company name (optional)."
         />
 
         <Input
           label="Address"
           {...register('address')}
           error={errors.address?.message}
+          tooltip="Enter the client's physical or billing address."
         />
 
         <Input
@@ -112,6 +127,7 @@ function ClientFormModal({ isOpen, onClose, client = null }) {
           {...register('website')}
           error={errors.website?.message}
           helperText="e.g., https://example.com"
+          tooltip="Enter the client's website URL (e.g., https://example.com)."
         />
 
         <div className="flex justify-end gap-3 pt-4">

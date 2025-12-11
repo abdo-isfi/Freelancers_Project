@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import { Moon, Sun } from 'lucide-react';
+import { useTheme } from '../../context/ThemeContext';
 import { cn } from '../../lib/utils';
 
 /**
@@ -11,12 +11,8 @@ import { cn } from '../../lib/utils';
  * - Keyboard accessible
  */
 export function ThemeToggle({ className }) {
-  const [isDark, setIsDark] = useState(true);
-
-  // If you want to integrate with next-themes or a global theme context:
-  // const { resolvedTheme, setTheme } = useTheme()
-  // const isDark = resolvedTheme === "dark"
-  // onClick={() => setTheme(isDark ? "light" : "dark")}
+  const { theme, toggleTheme } = useTheme();
+  const isDark = theme === 'dark';
 
   return (
     <div
@@ -27,13 +23,13 @@ export function ThemeToggle({ className }) {
           : 'bg-white border border-zinc-200',
         className
       )}
-      onClick={() => setIsDark(!isDark)}
+      onClick={toggleTheme}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          setIsDark(!isDark);
+          toggleTheme();
         }
       }}
     >

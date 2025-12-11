@@ -5,13 +5,15 @@ class ClientService {
    * Get all clients for a user with pagination
    */
   async getAllClients(userId, { page = 1, limit = 10, search = '' } = {}) {
-    const offset = (page - 1) * limit;
+    const pageNum = parseInt(page, 10);
+    const limitNum = parseInt(limit, 10);
+    const offset = (pageNum - 1) * limitNum;
 
     const { count, rows } = await Client.findAndCountAll({
       where: { user_id: userId },
       offset,
-      limit,
-      order: [['created_at', 'DESC']],
+      limit: limitNum,
+      order: [['createdAt', 'DESC']],
     });
 
     return {
@@ -49,22 +51,22 @@ class ClientService {
     name,
     email,
     phone,
-    companyName,
+    company,
     address,
+    website,
     taxId,
     currency,
   }) {
     const client = await Client.create({
       user_id: userId,
       name,
-      email,
-      phone,
-      company_name: companyName,
-      address,
-      tax_id: taxId,
-      currency: currency || 'EUR',
-      is_active: true,
-    });
+      contact_email: email,
+      contact_phone: phone,
+      contact_name: company,
+      billing_address: address,
+      notes: website ? `Website: ${website}` : null,
+      is_archived: false,
+    }); 
 
     return this.formatClient(client);
   }
@@ -85,14 +87,18 @@ class ClientService {
 
     const mappedUpdates = {
       name: updates.name,
-      email: updates.email,
-      phone: updates.phone,
-      company_name: updates.companyName,
-      address: updates.address,
-      tax_id: updates.taxId,
-      currency: updates.currency,
-      is_active: updates.isActive !== undefined ? updates.isActive : client.is_active,
+      contact_email: updates.email,
+      contact_phone: updates.phone,
+      contact_name: updates.company,
+      billing_address: updates.address,
+      // Handle website update logic if needed, for now appending or replacing in notes is complex without parsing
+      // notes: updates.website ? `Website: ${updates.website}` : client.notes, 
+      is_archived: updates.isActive !== undefined ? !updates.isActive : client.is_archived,
     };
+
+    if (updates.website) {
+       mappedUpdates.notes = `Website: ${updates.website}`;
+    }
 
     Object.keys(mappedUpdates).forEach((key) => {
       if (mappedUpdates[key] !== undefined) {
@@ -128,18 +134,22 @@ class ClientService {
    * Format client response
    */
   formatClient(client) {
+    let website = null;
+    if (client.notes && client.notes.startsWith('Website: ')) {
+        website = client.notes.replace('Website: ', '');
+    }
+
     return {
       id: client.id,
       name: client.name,
-      email: client.email,
-      phone: client.phone,
-      companyName: client.company_name,
-      address: client.address,
-      taxId: client.tax_id,
-      currency: client.currency,
-      isActive: client.is_active,
+      email: client.contact_email,
+      phone: client.contact_phone,
+      company: client.contact_name,
+      address: client.billing_address,
+      isActive: !client.is_archived,
       createdAt: client.created_at,
       updatedAt: client.updated_at,
+      website,
     };
   }
 }

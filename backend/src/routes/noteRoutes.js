@@ -7,7 +7,11 @@ const {
   deleteNote,
 } = require("../controllers/dashboardController");
 
+const { verifyToken } = require("../middlewares/authMiddleware");
+
 const router = express.Router();
+
+router.use(verifyToken);
 
 router.get("/", getNotes);
 router.get("/:id", getNoteById);

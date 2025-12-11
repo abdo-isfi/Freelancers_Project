@@ -8,7 +8,11 @@ const {
   stopTimeEntry,
 } = require("../controllers/timeEntryController");
 
+const { verifyToken } = require("../middlewares/authMiddleware");
+
 const router = express.Router();
+
+router.use(verifyToken);
 
 router.get("/", getTimeEntries);
 router.post("/", createTimeEntry);
