@@ -106,10 +106,26 @@ const projectsSlice = createSlice({
             state.items = payload.data;
             state.pagination = payload.pagination || state.pagination;
         } else if (Array.isArray(payload.items)) {
-             state.items = payload.items;
-             state.pagination = payload.pagination || state.pagination;
+            // If payload is just an array, pagination might not be present or needs to be reset
+            state.pagination = initialState.pagination; 
+        } else if (payload && typeof payload === 'object') {
+            // Prioritize 'data' array, then 'items' array
+            if (Array.isArray(payload.data)) {
+                state.items = payload.data;
+            } else if (Array.isArray(payload.items)) {
+                state.items = payload.items;
+            } else {
+                state.items = []; // No array found in expected properties
+            }
+            // Extract pagination if present
+            if (payload.pagination && typeof payload.pagination === 'object') {
+                state.pagination = { ...state.pagination, ...payload.pagination };
+            } else {
+                state.pagination = initialState.pagination; // Reset or default pagination
+            }
         } else {
             state.items = [];
+            state.pagination = initialState.pagination;
             console.warn('Unexpected projects response structure:', payload);
         }
       })

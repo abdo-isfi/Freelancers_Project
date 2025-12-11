@@ -22,16 +22,8 @@ function ClientsPage() {
 
   useEffect(() => {
     console.log('ClientsPage Rendered. Loading:', loading, 'Clients:', clients);
-    if (clients.length > 0) {
-        console.log('First Client Item Structure:', JSON.stringify(clients[0], null, 2));
-    }
-    if (clients.length === 0 && !loading) {
-         console.log('Clients list is empty, fetching...');
-         dispatch(fetchClients({ page: currentPage, limit: 20 }));
-    } else {
-        console.log('Clients list has', clients.length, 'items');
-    }
-  }, [dispatch, currentPage, clients, loading]);
+    dispatch(fetchClients({ page: currentPage, limit: 20 }));
+  }, [dispatch, currentPage]);
 
   const handleAddClient = () => {
     setSelectedClient(null);
