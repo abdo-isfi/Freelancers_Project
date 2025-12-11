@@ -156,7 +156,7 @@ function TimerWidget() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder={t('whatAreYouWorkingOn')}
-              className="w-full px-4 py-2.5 rounded-lg border border-border bg-white text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
+              className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
             />
           </div>
           <Button variant="primary" size="lg" onClick={handleStart} className="w-full">

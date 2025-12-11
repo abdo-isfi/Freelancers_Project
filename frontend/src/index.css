@@ -2,73 +2,75 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* Light Mode - Clean & Modern */
+    --background: 0 0% 100%; /* #ffffff */
+    --foreground: 0 0% 6%; /* #0f0f0f - dark text */
+    --card: 0 0% 98%; /* #f9f9f9 - subtle card background */
+    --card-foreground: 0 0% 6%; /* #0f0f0f */
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --popover-foreground: 0 0% 6%;
+    --primary: 221.2 83.2% 53.3%; /* Blue primary */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 96%; /* #f5f5f5 */
+    --secondary-foreground: 0 0% 10%; /* #1a1a1a */
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 40%; /* #666666 */
+    --accent: 0 0% 96%;
+    --accent-foreground: 0 0% 10%;
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 90%; /* #e5e5e5 - subtle borders */
+    --input: 0 0% 100%; /* white input backgrounds */
     --ring: 221.2 83.2% 53.3%;
     --radius: 0.5rem;
     
-    /* Login Component Variables */
-    --color-bg: #101214;
-    --color-surface: #161A1D;
-    --color-muted-surface: #1D2125;
-    --color-border: #2C333A;
-    --color-text-secondary: #596773;
-    --color-text-primary: #C7D1DB;
-    --color-heading: #DEE4EA;
+    /* Light Mode Specific Variables */
+    --color-bg: #ffffff;
+    --color-surface: #f9f9f9;
+    --color-muted-surface: #f5f5f5;
+    --color-border: #e5e5e5;
+    --color-text-secondary: #666666;
+    --color-text-primary: #0f0f0f;
+    --color-heading: #0f0f0f;
     --spacing-6: 1.5rem;
     --rounded-lg: 0.5rem;
     --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
-    --color-text-primary-rgb: 199, 209, 219;
-    --color-bg-2: #C7D1DB;
+    --color-text-primary-rgb: 15, 15, 15;
+    --color-bg-2: #0f0f0f;
   }
  
   .dark {
-    --background: 0 0% 0%; /* Pure Black */
-    --foreground: 210 40% 98%;
-    --card: 224 71% 4%; /* Gray 950 */
-    --card-foreground: 210 40% 98%;
-    --popover: 224 71% 4%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%; /* Gray 400ish */
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    /* Dark Mode - Modern & Deep */
+    --background: 0 0% 6%; /* #0f0f0f - modern dark */
+    --foreground: 0 0% 92%; /* #eaeaea - light text */
+    --card: 0 0% 7%; /* #111111 - slightly lighter than bg */
+    --card-foreground: 0 0% 92%;
+    --popover: 0 0% 10%; /* #1a1a1a */
+    --popover-foreground: 0 0% 92%;
+    --primary: 217.2 91.2% 59.8%; /* Bright blue for dark mode */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 10%; /* #1a1a1a */
+    --secondary-foreground: 0 0% 92%;
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 60%; /* #999999 */
+    --accent: 0 0% 10%;
+    --accent-foreground: 0 0% 92%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 15%; /* #262626 - subtle borders */
+    --input: 0 0% 10%; /* #1a1a1a - dark input backgrounds */
+    --ring: 217.2 91.2% 59.8%;
 
-    /* Login Component Variables (Dark Mode) */
-    --color-bg: #101214;
-    --color-surface: #161A1D;
-    --color-muted-surface: #1D2125;
-    --color-border: #2C333A;
-    --color-text-secondary: #596773;
-    --color-text-primary: #C7D1DB;
-    --color-heading: #DEE4EA;
-    --color-bg-2: #C7D1DB;
-    --color-text-primary-rgb: 199, 209, 219;
+    /* Dark Mode Specific Variables */
+    --color-bg: #0f0f0f;
+    --color-surface: #111111;
+    --color-muted-surface: #1a1a1a;
+    --color-border: #262626;
+    --color-text-secondary: #999999;
+    --color-text-primary: #eaeaea;
+    --color-heading: #ffffff;
+    --color-bg-2: #eaeaea;
+    --color-text-primary-rgb: 234, 234, 234;
   }
 }
 
@@ -156,16 +158,16 @@
   }
 
   .card {
-    @apply bg-white/5 backdrop-blur-xl text-card-foreground rounded-xl shadow-lg border border-white/10 p-6 hover:border-white/20 hover:bg-white/10 transition-all duration-200;
+    @apply bg-card text-card-foreground rounded-xl shadow-lg border border-border p-6 hover:shadow-xl transition-all duration-200;
   }
 
-  /* Autofill override */
+  /* Autofill override - theme aware */
   input:-webkit-autofill,
   input:-webkit-autofill:hover, 
   input:-webkit-autofill:focus, 
   input:-webkit-autofill:active{
       -webkit-box-shadow: 0 0 0 30px var(--color-surface) inset !important;
-      -webkit-text-fill-color: white !important;
+      -webkit-text-fill-color: var(--color-text-primary) !important;
       transition: background-color 5000s ease-in-out 0s;
   }
 }

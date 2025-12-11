@@ -21,7 +21,6 @@ function ClientsPage() {
   const [selectedClient, setSelectedClient] = useState(null);
 
   useEffect(() => {
-    console.log('ClientsPage Rendered. Loading:', loading, 'Clients:', clients);
     dispatch(fetchClients({ page: currentPage, limit: 20 }));
   }, [dispatch, currentPage]);
 

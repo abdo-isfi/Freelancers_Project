@@ -70,6 +70,7 @@ class TimeEntryService {
       project_id: projectId,
       task_id: taskId,
       user_id: userId,
+      date: startTime ? new Date(startTime) : new Date(),
       start_time: startTime,
       end_time: endTime,
       duration_minutes: durationMinutes,
@@ -148,11 +149,13 @@ class TimeEntryService {
       throw error;
     }
 
+    const now = new Date();
     const entry = await TimeEntry.create({
       project_id: projectId,
       task_id: taskId,
       user_id: userId,
-      start_time: new Date(),
+      date: now,
+      start_time: now,
       description,
       is_billable: true,
     });

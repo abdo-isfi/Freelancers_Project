@@ -142,7 +142,7 @@ function ProjectsPage() {
               <tbody className="bg-card divide-y divide-border">
                 {projects.map((project) => (
                   <tr key={project.id} className="hover:bg-accent/50">
-                    <td className="px-6 py-4">
+                    <td className="px-6 py-4 text-left">
                       <div className="text-sm font-medium text-foreground">
                         {project.name}
                       </div>
@@ -152,22 +152,22 @@ function ProjectsPage() {
                         </div>
                       )}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-6 py-4 whitespace-nowrap text-left">
                       <div className="text-sm text-muted-foreground">
                         {project.Client?.name || '-'}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-6 py-4 whitespace-nowrap text-left">
                       <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[project.status]}`}>
                         {statusLabels[project.status]}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-6 py-4 whitespace-nowrap text-left">
                       <div className="text-sm text-muted-foreground">
                         {project.budget ? formatCurrency(project.budget) : '-'}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-6 py-4 whitespace-nowrap text-left">
                       <div className="text-sm text-muted-foreground">
                         {project.startDate ? formatDate(project.startDate) : '-'}
                       </div>

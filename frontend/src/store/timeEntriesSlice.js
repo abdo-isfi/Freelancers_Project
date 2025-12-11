@@ -117,10 +117,20 @@ const timeEntriesSlice = createSlice({
       })
       .addCase(fetchTimeEntries.fulfilled, (state, action) => {
         state.loading = false;
-        // API returns { success: true, data: { data: [], pagination: {} } }
-        const responseData = action.payload.data || action.payload;
-        state.items = responseData.data || responseData.items || [];
-        state.pagination = responseData.pagination || state.pagination;
+        // Handle different response structures
+        const payload = action.payload;
+        if (Array.isArray(payload)) {
+            state.items = payload;
+        } else if (Array.isArray(payload.data)) {
+            state.items = payload.data;
+            state.pagination = payload.pagination || state.pagination;
+        } else if (Array.isArray(payload.items)) {
+             state.items = payload.items;
+             state.pagination = payload.pagination || state.pagination;
+        } else {
+            state.items = [];
+            console.warn('Unexpected timeEntries response structure:', payload);
+        }
       })
       .addCase(fetchTimeEntries.rejected, (state, action) => {
         state.loading = false;

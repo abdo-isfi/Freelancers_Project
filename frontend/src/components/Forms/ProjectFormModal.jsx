@@ -53,15 +53,11 @@ function ProjectFormModal({ isOpen, onClose, project = null }) {
   }, [project, reset]);
 
   const onSubmit = async (data) => {
-    console.log('Form Submission Data:', data);
-    console.log('ClientId Type:', typeof data.clientId, 'Value:', data.clientId);
-    
     // Force integer conversion to be safe
     const payload = {
         ...data,
         clientId: data.clientId ? parseInt(data.clientId, 10) : null
     };
-    console.log('Processed Payload:', payload);
 
     try {
       if (isEditMode) {
@@ -99,7 +95,7 @@ function ProjectFormModal({ isOpen, onClose, project = null }) {
         />
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-foreground mb-1">
             Client <span className="text-red-500">*</span>
           </label>
           <select
@@ -119,7 +115,7 @@ function ProjectFormModal({ isOpen, onClose, project = null }) {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-foreground mb-1">
             Description
           </label>
           <textarea
@@ -131,7 +127,7 @@ function ProjectFormModal({ isOpen, onClose, project = null }) {
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-foreground mb-1">
               Billing Type
             </label>
             <select
@@ -158,7 +154,7 @@ function ProjectFormModal({ isOpen, onClose, project = null }) {
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-foreground mb-1">
               Status
             </label>
             <select {...register('status')} className="input-field">

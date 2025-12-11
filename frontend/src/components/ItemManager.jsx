@@ -75,26 +75,26 @@ const ItemManager = () => {
     <div className="p-6 max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold mb-6">Item Manager (Full Stack Demo)</h1>
       
-      <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-        <h2 className="text-xl font-semibold mb-4">{editingId ? 'Edit Item' : 'Add New Item'}</h2>
+      <div className="bg-card p-6 rounded-lg shadow-md mb-8">
+        <h2 className="text-xl font-semibold mb-4 text-foreground">{editingId ? 'Edit Item' : 'Add New Item'}</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+            <label className="block text-sm font-medium text-foreground mb-1">Name</label>
             <input
               type="text"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-background text-foreground"
               placeholder="Item name"
               required
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <label className="block text-sm font-medium text-foreground mb-1">Description</label>
             <textarea
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-background text-foreground"
               placeholder="Item description"
               rows="3"
             />
@@ -103,18 +103,15 @@ const ItemManager = () => {
             <button
               type="submit"
               disabled={loading}
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+              className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 disabled:opacity-50"
             >
               {loading ? 'Saving...' : (editingId ? 'Update Item' : 'Create Item')}
             </button>
             {editingId && (
               <button
                 type="button"
-                onClick={() => {
-                  setFormData({ name: '', description: '' });
-                  setEditingId(null);
-                }}
-                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+                onClick={resetForm}
+                className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/80"
               >
                 Cancel
               </button>
@@ -123,32 +120,32 @@ const ItemManager = () => {
         </form>
       </div>
 
-      <div className="bg-white rounded-lg shadow-md overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+      <div className="bg-card rounded-lg shadow-md overflow-hidden">
+        <table className="min-w-full divide-y divide-border">
+          <thead className="bg-muted">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">ID</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Name</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Description</th>
+              <th className="px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="bg-card divide-y divide-border">
             {items.map((item) => (
               <tr key={item.id}>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.id}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.name}</td>
-                <td className="px-6 py-4 text-sm text-gray-500">{item.description}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">{item.id}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">{item.name}</td>
+                <td className="px-6 py-4 text-sm text-muted-foreground">{item.description}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <button
                     onClick={() => handleEdit(item)}
-                    className="text-indigo-600 hover:text-indigo-900 mr-4"
+                    className="text-primary hover:text-primary/80 mr-3"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDelete(item.id)}
-                    className="text-red-600 hover:text-red-900"
+                    className="text-destructive hover:text-destructive/80"
                   >
                     Delete
                   </button>
@@ -157,8 +154,8 @@ const ItemManager = () => {
             ))}
             {items.length === 0 && (
               <tr>
-                <td colSpan="4" className="px-6 py-4 text-center text-sm text-gray-500">
-                  No items found. Create one above!
+                <td colSpan="4" className="px-6 py-4 text-center text-sm text-muted-foreground">
+                  No items yet. Add one above!
                 </td>
               </tr>
             )}

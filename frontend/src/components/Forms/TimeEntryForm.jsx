@@ -134,7 +134,7 @@ function TimeEntryForm({ onSuccess }) {
           type="date"
           value={formData.date}
           onChange={(e) => handleChange('date', e.target.value)}
-          className={`w-full px-4 py-2.5 rounded-lg border bg-white text-foreground ${
+          className={`w-full px-4 py-2.5 rounded-lg border bg-background text-foreground ${
             errors.date ? 'border-red-500' : 'border-border'
           } focus:border-primary focus:ring-2 focus:ring-primary/20`}
         />
@@ -150,7 +150,7 @@ function TimeEntryForm({ onSuccess }) {
             type="time"
             value={formData.startTime}
             onChange={(e) => handleChange('startTime', e.target.value)}
-            className={`w-full px-4 py-2.5 rounded-lg border bg-white text-foreground ${
+            className={`w-full px-4 py-2.5 rounded-lg border bg-background text-foreground ${
               errors.startTime ? 'border-red-500' : 'border-border'
             } focus:border-primary focus:ring-2 focus:ring-primary/20`}
           />
@@ -165,7 +165,7 @@ function TimeEntryForm({ onSuccess }) {
             type="time"
             value={formData.endTime}
             onChange={(e) => handleChange('endTime', e.target.value)}
-            className={`w-full px-4 py-2.5 rounded-lg border bg-white text-foreground ${
+            className={`w-full px-4 py-2.5 rounded-lg border bg-background text-foreground ${
               errors.endTime ? 'border-red-500' : 'border-border'
             } focus:border-primary focus:ring-2 focus:ring-primary/20`}
           />
@@ -190,7 +190,7 @@ function TimeEntryForm({ onSuccess }) {
           onChange={(e) => handleChange('description', e.target.value)}
           placeholder="What did you work on?"
           rows={3}
-          className="w-full px-4 py-2.5 rounded-lg border border-border bg-white text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
+          className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
         />
       </div>
 

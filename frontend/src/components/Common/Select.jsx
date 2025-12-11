@@ -15,9 +15,9 @@ const Select = forwardRef(
     ref
   ) => {
     const baseClasses =
-      'w-full px-4 py-2.5 rounded-lg border bg-white text-foreground appearance-none cursor-pointer transition-colors';
+      'w-full px-4 py-2.5 rounded-lg border bg-background text-foreground appearance-none cursor-pointer transition-colors';
     const normalClasses = 'border-border hover:border-primary focus:border-primary focus:ring-2 focus:ring-primary/20';
-    const errorClasses = 'border-red-500 focus:border-red-500 focus:ring-red-500/20';
+    const errorClasses = 'border-destructive focus:border-destructive focus:ring-destructive/20';
     const disabledClasses = 'bg-muted cursor-not-allowed opacity-60';
 
     const selectClasses = `
@@ -61,7 +61,7 @@ const Select = forwardRef(
           </div>
         </div>
         {error && (
-          <p className="mt-1.5 text-sm text-red-500">{error}</p>
+          <p className="mt-1.5 text-sm text-destructive">{error}</p>
         )}
       </div>
     );

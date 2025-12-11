@@ -87,7 +87,7 @@ function TaskFormModal({ isOpen, onClose, task = null }) {
         />
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-foreground mb-1">
             Project <span className="text-red-500">*</span>
           </label>
           <select
@@ -107,7 +107,7 @@ function TaskFormModal({ isOpen, onClose, task = null }) {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-foreground mb-1">
             Description
           </label>
           <textarea
@@ -119,7 +119,7 @@ function TaskFormModal({ isOpen, onClose, task = null }) {
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-foreground mb-1">
               Status
             </label>
             <select {...register('status')} className="input-field">
@@ -130,7 +130,7 @@ function TaskFormModal({ isOpen, onClose, task = null }) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-foreground mb-1">
               Priority
             </label>
             <select {...register('priority')} className="input-field">

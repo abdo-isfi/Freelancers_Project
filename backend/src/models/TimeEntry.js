@@ -46,6 +46,11 @@ module.exports = (sequelize) => {
         allowNull: false,
         defaultValue: false,
       },
+      is_billable: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
+      },
       invoice_id: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: true,

@@ -141,7 +141,7 @@ function InvoiceForm({ onSuccess }) {
             type="text"
             value={formData.invoiceNumber}
             onChange={(e) => handleChange('invoiceNumber', e.target.value)}
-            className={`w-full px-4 py-2.5 rounded-lg border bg-white text-foreground ${
+            className={`w-full px-4 py-2.5 rounded-lg border bg-background text-foreground ${
               errors.invoiceNumber ? 'border-red-500' : 'border-border'
             } focus:border-primary focus:ring-2 focus:ring-primary/20`}
           />
@@ -160,7 +160,7 @@ function InvoiceForm({ onSuccess }) {
             type="date"
             value={formData.date}
             onChange={(e) => handleChange('date', e.target.value)}
-            className={`w-full px-4 py-2.5 rounded-lg border bg-white text-foreground ${
+            className={`w-full px-4 py-2.5 rounded-lg border bg-background text-foreground ${
               errors.date ? 'border-red-500' : 'border-border'
             } focus:border-primary focus:ring-2 focus:ring-primary/20`}
           />
@@ -175,7 +175,7 @@ function InvoiceForm({ onSuccess }) {
             type="date"
             value={formData.dueDate}
             onChange={(e) => handleChange('dueDate', e.target.value)}
-            className={`w-full px-4 py-2.5 rounded-lg border bg-white text-foreground ${
+            className={`w-full px-4 py-2.5 rounded-lg border bg-background text-foreground ${
               errors.dueDate ? 'border-red-500' : 'border-border'
             } focus:border-primary focus:ring-2 focus:ring-primary/20`}
           />
@@ -202,7 +202,7 @@ function InvoiceForm({ onSuccess }) {
                   value={item.description}
                   onChange={(e) => updateLineItem(index, 'description', e.target.value)}
                   placeholder="Description"
-                  className="w-full px-4 py-2.5 rounded-lg border border-border bg-white text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
+                  className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
                 />
               </div>
               <div className="w-24">
@@ -213,7 +213,7 @@ function InvoiceForm({ onSuccess }) {
                   placeholder="Qty"
                   min="0"
                   step="0.01"
-                  className="w-full px-4 py-2.5 rounded-lg border border-border bg-white text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
+                  className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
                 />
               </div>
               <div className="w-32">
@@ -224,7 +224,7 @@ function InvoiceForm({ onSuccess }) {
                   placeholder="Rate"
                   min="0"
                   step="0.01"
-                  className="w-full px-4 py-2.5 rounded-lg border border-border bg-white text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
+                  className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
                 />
               </div>
               <div className="w-32 px-4 py-2.5 text-right text-foreground font-medium">
@@ -258,7 +258,7 @@ function InvoiceForm({ onSuccess }) {
             min="0"
             max="100"
             step="0.01"
-            className="w-full px-4 py-2.5 rounded-lg border border-border bg-white text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
+            className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
           />
         </div>
 
@@ -273,7 +273,7 @@ function InvoiceForm({ onSuccess }) {
             min="0"
             max="100"
             step="0.01"
-            className="w-full px-4 py-2.5 rounded-lg border border-border bg-white text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
+            className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
           />
         </div>
       </div>
@@ -312,7 +312,7 @@ function InvoiceForm({ onSuccess }) {
           onChange={(e) => handleChange('notes', e.target.value)}
           placeholder="Additional notes or payment terms..."
           rows={3}
-          className="w-full px-4 py-2.5 rounded-lg border border-border bg-white text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
+          className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
         />
       </div>
 

@@ -2,7 +2,7 @@ import { HeroSection } from "@/components/ui/hero-section-dark"
 
 function HeroSectionDemo() {
   return (
-    <div className="w-full min-h-screen bg-white dark:bg-black">
+    <div className="w-full min-h-screen bg-background dark:bg-black">
       <HeroSection
         title="Welcome to Our Platform"
         subtitle={{
