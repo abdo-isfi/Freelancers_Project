@@ -99,6 +99,7 @@ const clientsSlice = createSlice({
         state.loading = false;
         // Payload is { data: [clients], pagination: {...} }
         const payload = action.payload;
+        console.log('fetchClients.fulfilled payload RE-CHECK:', payload);
         
         // Handle potential different response structures
         if (Array.isArray(payload)) {
@@ -111,8 +112,9 @@ const clientsSlice = createSlice({
              state.pagination = payload.pagination || state.pagination;
         } else {
             state.items = [];
-            
+            console.warn('Unexpected clients response structure:', payload);
         }
+        console.log('Extracted items:', state.items);
       })
       .addCase(fetchClients.rejected, (state, action) => {
         state.loading = false;

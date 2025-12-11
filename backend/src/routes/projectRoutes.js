@@ -8,6 +8,7 @@ const {
 } = require("../controllers/projectController");
 const { verifyToken } = require("../middlewares/authMiddleware");
 const { projectValidation } = require("../middlewares/validationMiddleware");
+const { validationResult } = require('express-validator');
 
 const router = express.Router();
 

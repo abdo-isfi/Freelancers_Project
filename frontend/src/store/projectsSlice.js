@@ -97,10 +97,21 @@ const projectsSlice = createSlice({
       })
       .addCase(fetchProjects.fulfilled, (state, action) => {
         state.loading = false;
-        // API returns { success: true, data: { data: [], pagination: {} } }
-        const responseData = action.payload.data || action.payload;
-        state.items = responseData.data || responseData.items || [];
-        state.pagination = responseData.pagination || state.pagination;
+        // Handle potential different response structures
+        const payload = action.payload;
+        console.log('fetchProjects.fulfilled payload RE-CHECK:', payload);
+        if (Array.isArray(payload)) {
+            state.items = payload;
+        } else if (Array.isArray(payload.data)) {
+            state.items = payload.data;
+            state.pagination = payload.pagination || state.pagination;
+        } else if (Array.isArray(payload.items)) {
+             state.items = payload.items;
+             state.pagination = payload.pagination || state.pagination;
+        } else {
+            state.items = [];
+            console.warn('Unexpected projects response structure:', payload);
+        }
       })
       .addCase(fetchProjects.rejected, (state, action) => {
         state.loading = false;

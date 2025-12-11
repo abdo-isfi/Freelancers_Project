@@ -16,6 +16,7 @@ const projectSchema = yup.object({
   description: yup.string(),
   clientId: yup.number().required('Client is required').positive('Please select a client'),
   status: yup.string().oneOf(['active', 'on_hold', 'completed', 'cancelled']),
+  billingType: yup.string().oneOf(['hourly', 'day_rate', 'fixed_price']).required('Billing type is required'),
   startDate: yup.date(),
   endDate: yup.date(),
   budget: yup.number().min(0, 'Budget must be positive'),
@@ -35,7 +36,7 @@ function ProjectFormModal({ isOpen, onClose, project = null }) {
     reset,
   } = useForm({
     resolver: yupResolver(projectSchema),
-    defaultValues: project || { status: 'active' },
+    defaultValues: project || { status: 'active', billingType: 'fixed_price' },
   });
 
   useEffect(() => {
@@ -47,17 +48,27 @@ function ProjectFormModal({ isOpen, onClose, project = null }) {
     if (project) {
       reset(project);
     } else {
-      reset({ status: 'active' });
+      reset({ status: 'active', billingType: 'fixed_price' });
     }
   }, [project, reset]);
 
   const onSubmit = async (data) => {
+    console.log('Form Submission Data:', data);
+    console.log('ClientId Type:', typeof data.clientId, 'Value:', data.clientId);
+    
+    // Force integer conversion to be safe
+    const payload = {
+        ...data,
+        clientId: data.clientId ? parseInt(data.clientId, 10) : null
+    };
+    console.log('Processed Payload:', payload);
+
     try {
       if (isEditMode) {
-        await dispatch(updateProject({ id: project.id, data })).unwrap();
+        await dispatch(updateProject({ id: project.id, data: payload })).unwrap();
         toast.success('Project updated successfully');
       } else {
-        await dispatch(createProject(data)).unwrap();
+        await dispatch(createProject(payload)).unwrap();
         toast.success('Project created successfully');
       }
       onClose();
@@ -121,6 +132,33 @@ function ProjectFormModal({ isOpen, onClose, project = null }) {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
+              Billing Type
+            </label>
+            <select
+              {...register('billingType')}
+              className={`input-field ${errors.billingType ? 'border-red-500' : ''}`}
+            >
+              <option value="fixed_price">Fixed Price</option>
+              <option value="hourly">Hourly Rate</option>
+              <option value="day_rate">Day Rate</option>
+            </select>
+            {errors.billingType && (
+              <p className="mt-1 text-sm text-red-600">{errors.billingType.message}</p>
+            )}
+          </div>
+
+          <Input
+            label="Budget / Rate"
+            type="number"
+            step="0.01"
+            {...register('budget')}
+            error={errors.budget?.message}
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Status
             </label>
             <select {...register('status')} className="input-field">
@@ -130,14 +168,6 @@ function ProjectFormModal({ isOpen, onClose, project = null }) {
               <option value="cancelled">Cancelled</option>
             </select>
           </div>
-
-          <Input
-            label="Budget"
-            type="number"
-            step="0.01"
-            {...register('budget')}
-            error={errors.budget?.message}
-          />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
