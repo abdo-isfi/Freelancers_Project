@@ -96,7 +96,7 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="h-screen w-full bg-[var(--color-bg)] flex items-center justify-center p-4 overflow-hidden">
+    <div className="min-h-screen w-full bg-[var(--color-bg)] flex items-center justify-center p-4 overflow-hidden">
       {/* Error Toast */}
       <AnimatePresence>
         {error && (
@@ -104,21 +104,21 @@ const AuthPage = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed top-4 right-4 z-50 rounded-md bg-red-50 p-4 shadow-lg"
+            className="fixed top-4 right-4 z-50 rounded-xl bg-red-50 dark:bg-red-900/30 p-4 shadow-xl border border-red-200 dark:border-red-800"
           >
-            <div className="text-sm font-medium text-red-800">{error}</div>
+            <div className="text-sm font-medium text-red-800 dark:text-red-200">{error}</div>
           </motion.div>
         )}
       </AnimatePresence>
 
       <div 
-        className="card w-[95%] lg:w-[70%] md:w-[85%] h-[600px] relative flex overflow-hidden rounded-2xl shadow-2xl bg-[var(--color-surface)]"
+        className="card w-[95%] lg:w-[75%] xl:w-[70%] 2xl:w-[65%] h-[650px] md:h-[700px] relative flex overflow-hidden rounded-3xl shadow-2xl bg-[var(--color-surface)] border border-[var(--color-border)]"
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
       >
         <div
-          className={`absolute pointer-events-none w-[500px] h-[500px] bg-gradient-to-r from-purple-300/30 via-blue-300/30 to-pink-300/30 rounded-full blur-3xl transition-opacity duration-200 z-0 ${
+          className={`absolute pointer-events-none w-[500px] h-[500px] bg-gradient-to-r from-purple-400/20 via-blue-400/20 to-pink-400/20 dark:from-purple-300/15 dark:via-blue-300/15 dark:to-pink-300/15 rounded-full blur-3xl transition-opacity duration-300 z-0 ${
             isHovering ? 'opacity-100' : 'opacity-0'
           }`}
           style={{

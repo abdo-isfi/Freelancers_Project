@@ -4,13 +4,20 @@ import { AppInput } from './app-input';
 export const LoginForm = ({ onSubmit, register, errors, loading }) => {
 
   return (
-    <div className="form-container sign-in-container h-full z-10 w-full px-4 lg:px-16 flex flex-col justify-center">
-      <form className='text-center py-10 md:py-20 grid gap-2 h-full' onSubmit={onSubmit}>
-        <div className='grid gap-4 md:gap-6 mb-2'>
-          <h1 className='text-3xl md:text-4xl font-extrabold text-[var(--color-heading)]' onClick={(e) => {e.preventDefault()}}>Sign in</h1>
+    <div className="form-container sign-in-container h-full z-10 w-full px-6 lg:px-12 flex flex-col justify-center">
+      <form className='flex flex-col gap-6 max-w-md mx-auto w-full' onSubmit={onSubmit}>
+        {/* Title Section */}
+        <div className='text-center mb-2'>
+          <h1 className='text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 dark:from-purple-400 dark:via-blue-400 dark:to-purple-400 bg-clip-text text-transparent mb-2'>
+            Sign in
+          </h1>
+          <p className='text-[var(--color-text-secondary)] text-sm'>
+            Welcome back! Please enter your details.
+          </p>
         </div>
       
-      <div className='grid gap-4 items-center'>
+        {/* Input Fields */}
+        <div className='flex flex-col gap-4'>
           <div className="w-full">
             <AppInput 
               placeholder="Email" 
@@ -18,7 +25,7 @@ export const LoginForm = ({ onSubmit, register, errors, loading }) => {
               {...(register ? register('email') : {})}
             />
             {errors?.email && (
-              <p className="text-red-500 text-xs text-left mt-1">{errors.email.message}</p>
+              <p className="text-red-500 text-xs text-left mt-1.5 ml-1">{errors.email.message}</p>
             )}
           </div>
           <div className="w-full">
@@ -28,23 +35,32 @@ export const LoginForm = ({ onSubmit, register, errors, loading }) => {
               {...(register ? register('password') : {})}
             />
             {errors?.password && (
-              <p className="text-red-500 text-xs text-left mt-1">{errors.password.message}</p>
+              <p className="text-red-500 text-xs text-left mt-1.5 ml-1">{errors.password.message}</p>
             )}
           </div>
         </div>
-        <a href="#" className='font-light text-sm md:text-md text-[var(--color-text-secondary)]'>Forgot your password?</a>
-        <div className='flex gap-4 justify-center items-center'>
-            <button 
-            type="submit"
-            disabled={loading}
-            className="group/button relative inline-flex justify-center items-center overflow-hidden rounded-md bg-[var(--color-border)] px-4 py-1.5 text-xs font-normal text-white transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg hover:shadow-[var(--color-text-primary)] cursor-pointer disabled:opacity-50"
-          >
-          <span className="text-sm px-2 py-1">{loading ? 'Signing in...' : 'Sign In'}</span>
-          <div className="absolute inset-0 flex h-full w-full justify-center [transform:skew(-13deg)_translateX(-100%)] group-hover/button:duration-1000 group-hover/button:[transform:skew(-13deg)_translateX(100%)]">
-            <div className="relative h-full w-8 bg-white/20" />
-          </div>
+
+        {/* Forgot Password Link */}
+        <a href="#" className='text-sm text-[var(--color-text-secondary)] hover:text-purple-600 dark:hover:text-purple-400 transition-colors duration-200 text-right'>
+          Forgot your password?
+        </a>
+
+        {/* Submit Button */}
+        <button 
+          type="submit"
+          disabled={loading}
+          className="relative w-full h-12 rounded-xl font-semibold text-white text-base
+                     bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600
+                     hover:from-purple-700 hover:via-blue-700 hover:to-purple-700
+                     shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40
+                     transition-all duration-300 ease-in-out
+                     hover:scale-[1.02] active:scale-[0.98]
+                     disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100
+                     overflow-hidden group"
+        >
+          <span className="relative z-10">{loading ? 'Signing in...' : 'Sign In'}</span>
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-400 via-blue-400 to-purple-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
         </button>
-        </div>
       </form>
     </div>
   )

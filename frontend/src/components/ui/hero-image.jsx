@@ -1,32 +1,40 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 export const HeroImage = ({ isLoginView, onToggle }) => {
   return (
-    <div
-      className='w-full h-full relative overflow-hidden'
-    >
+    <div className='w-full h-full relative overflow-hidden'>
+      {/* Background Image */}
       <img
         src='https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop'
         alt="Freelance workspace" 
-        className="w-full h-full object-cover transition-transform duration-300 opacity-30"
+        className="w-full h-full object-cover transition-transform duration-700 scale-105 opacity-60"
       />
       
-      {/* Overlay Content */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8 z-30 bg-black/20">
-        <h2 className="text-3xl font-bold text-white mb-4">
-          {isLoginView ? "New Here?" : "One of us?"}
-        </h2>
-        <p className="text-white/90 mb-8 max-w-xs">
-          {isLoginView 
-            ? "Sign up and discover a great amount of new opportunities!" 
-            : "If you already have an account, just sign in. We've missed you!"}
-        </p>
-        <button
-          onClick={onToggle}
-          className="px-8 py-2 rounded-full border-2 border-white text-white font-semibold transition-all duration-300 hover:bg-white hover:text-[var(--color-bg)] hover:scale-105"
-        >
-          {isLoginView ? "Sign Up" : "Sign In"}
-        </button>
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-600/80 via-blue-600/70 to-purple-800/80 dark:from-purple-500/70 dark:via-blue-500/60 dark:to-purple-700/70" />
+      
+      {/* Glassmorphism Overlay Content */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8 z-30">
+        <div className="backdrop-blur-sm bg-white/10 dark:bg-black/10 rounded-3xl p-8 md:p-12 border border-white/20 shadow-2xl max-w-md">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg">
+            {isLoginView ? "New Here?" : "One of us?"}
+          </h2>
+          <p className="text-white/95 text-base md:text-lg mb-8 leading-relaxed drop-shadow-md">
+            {isLoginView 
+              ? "Join us today and unlock amazing opportunities for your freelance career!" 
+              : "Welcome back! Sign in to continue your journey with us."}
+          </p>
+          <button
+            onClick={onToggle}
+            className="px-8 py-3.5 rounded-xl bg-white/20 backdrop-blur-md border-2 border-white/40 
+                       text-white font-semibold text-base
+                       transition-all duration-300 
+                       hover:bg-white hover:text-purple-700 hover:scale-105 hover:shadow-xl
+                       active:scale-95"
+          >
+            {isLoginView ? "Sign Up" : "Sign In"}
+          </button>
+        </div>
       </div>
     </div>
   );

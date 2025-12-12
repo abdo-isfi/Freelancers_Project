@@ -135,6 +135,17 @@ class TimeEntryService {
    * Start time tracking (create entry without end time)
    */
   async startTracking(userId, { projectId, taskId, description }) {
+    // Verify project belongs to user
+    const project = await Project.findOne({
+      where: { id: projectId, user_id: userId },
+    });
+
+    if (!project) {
+      const error = new Error('Project not found');
+      error.status = 404;
+      throw error;
+    }
+
     // Check if there's already an active entry
     const activeEntry = await TimeEntry.findOne({
       where: {

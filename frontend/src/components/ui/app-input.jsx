@@ -1,53 +1,37 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 const AppInput = (props) => {
   const { label, placeholder, icon, ...rest } = props;
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isHovering, setIsHovering] = useState(false);
-
-  const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setMousePosition({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top
-    });
-  };
 
   return (
     <div className="w-full min-w-[200px] relative">
-      { label && 
-        <label className='block mb-2 text-sm'>
+      {label && 
+        <label className='block mb-2 text-sm font-medium text-[var(--color-text-primary)]'>
           {label}
         </label>
       }
       <div className="relative w-full">
         <input
           type="text"
-          className="peer relative z-10 border-2 border-[var(--color-border)] h-13 w-full rounded-md bg-[var(--color-surface)] px-4 font-medium outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-[var(--color-bg)] placeholder:font-medium text-white"
+          className="peer relative z-10 w-full h-12 px-4 py-3.5 
+                     rounded-xl border-2 border-[var(--color-border)]
+                     bg-[var(--color-surface)] 
+                     text-[var(--color-text-primary)] placeholder:text-[var(--color-text-secondary)]
+                     font-medium text-base
+                     outline-none 
+                     shadow-sm
+                     transition-all duration-300 ease-in-out
+                     hover:border-purple-400/50 dark:hover:border-purple-500/50
+                     focus:border-transparent
+                     focus:ring-2 focus:ring-purple-500/50 dark:focus:ring-purple-400/50
+                     focus:shadow-lg focus:shadow-purple-500/20 dark:focus:shadow-purple-400/20
+                     focus:bg-[var(--color-bg)]
+                     disabled:opacity-50 disabled:cursor-not-allowed"
           placeholder={placeholder}
-          onMouseMove={handleMouseMove}
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
           {...rest}
         />
-        {isHovering && (
-          <>
-            <div
-              className="absolute pointer-events-none top-0 left-0 right-0 h-[2px] z-20 rounded-t-md overflow-hidden"
-              style={{
-                background: `radial-gradient(30px circle at ${mousePosition.x}px 0px, var(--color-text-primary) 0%, transparent 70%)`,
-              }}
-            />
-            <div
-              className="absolute pointer-events-none bottom-0 left-0 right-0 h-[2px] z-20 rounded-b-md overflow-hidden"
-              style={{
-                background: `radial-gradient(30px circle at ${mousePosition.x}px 2px, var(--color-text-primary) 0%, transparent 70%)`,
-              }}
-            />
-          </>
-        )}
         {icon && (
-          <div className="absolute right-3 top-1/2 -translate-y-1/2 z-20">
+          <div className="absolute right-3 top-1/2 -translate-y-1/2 z-20 text-[var(--color-text-secondary)]">
             {icon}
           </div>
         )}

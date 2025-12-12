@@ -83,9 +83,8 @@ function TimerWidget() {
 
     try {
       const timerData = {
-        projectId: parseInt(selectedProject),
+        projectId: parseInt(selectedProject, 10),
         description,
-        startTime: new Date().toISOString(),
       };
 
       const result = await dispatch(startTimer(timerData)).unwrap();
