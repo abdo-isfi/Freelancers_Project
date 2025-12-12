@@ -111,7 +111,6 @@ const clientsSlice = createSlice({
              state.pagination = payload.pagination || state.pagination;
         } else {
             state.items = [];
-            console.warn('Unexpected clients response structure:', payload);
         }
       })
       .addCase(fetchClients.rejected, (state, action) => {

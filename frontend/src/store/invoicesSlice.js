@@ -148,7 +148,6 @@ const invoicesSlice = createSlice({
              state.pagination = payload.pagination || state.pagination;
         } else {
             state.items = [];
-            console.warn('Unexpected invoices response structure:', payload);
         }
       })
       .addCase(fetchInvoices.rejected, (state, action) => {

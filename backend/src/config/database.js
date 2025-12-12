@@ -8,7 +8,7 @@ module.exports = {
     host: config.database.host,
     port: config.database.port,
     dialect: 'mysql',
-    logging: config.isDevelopment() ? console.log : false,
+    logging: false,
     pool: {
       max: 5,
       min: 0,

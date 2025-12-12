@@ -4,8 +4,17 @@ import { useTranslation } from 'react-i18next';
 import { PlayIcon, PauseIcon, StopIcon } from '@heroicons/react/24/solid';
 import Button from '../Common/Button';
 import Select from '../Common/Select';
-import { startTimer, stopTimer, setActiveTimer, updateTimerDuration } from '../../store/timeEntriesSlice';
+import { startTimer, stopTimer, setActiveTimer, clearActiveTimer } from '../../store/timeEntriesSlice';
 import { showSuccess, showError } from '../../utils/toast';
+import { 
+  calculateElapsedTime, 
+  formatDuration, 
+  isTimerRunning,
+  createTimerState,
+  pauseTimer,
+  resumeTimer,
+  saveActiveTimer
+} from '../../utils/timerService';
 
 function TimerWidget() {
   const { t } = useTranslation();
@@ -15,47 +24,27 @@ function TimerWidget() {
 
   const [selectedProject, setSelectedProject] = useState('');
   const [description, setDescription] = useState('');
-  const [isRunning, setIsRunning] = useState(false);
-  const [duration, setDuration] = useState(0);
+  const [displayTime, setDisplayTime] = useState(0);
   const intervalRef = useRef(null);
 
-  // Load timer from localStorage on mount
+  // Update display time every second if timer is running
   useEffect(() => {
-    const savedTimer = localStorage.getItem('activeTimer');
-    if (savedTimer) {
-      const timer = JSON.parse(savedTimer);
-      dispatch(setActiveTimer(timer));
-      setSelectedProject(timer.projectId);
-      setDescription(timer.description || '');
-      setDuration(timer.duration || 0);
-      setIsRunning(timer.isRunning || false);
-    }
-  }, [dispatch]);
+    if (activeTimer && isTimerRunning(activeTimer)) {
+      // Initial calculation
+      setDisplayTime(calculateElapsedTime(activeTimer));
 
-  // Save timer to localStorage whenever it changes
-  useEffect(() => {
-    if (activeTimer) {
-      localStorage.setItem('activeTimer', JSON.stringify({
-        ...activeTimer,
-        duration,
-        isRunning,
-      }));
-    } else {
-      localStorage.removeItem('activeTimer');
-    }
-  }, [activeTimer, duration, isRunning]);
-
-  // Timer interval
-  useEffect(() => {
-    if (isRunning) {
+      // Update every second
       intervalRef.current = setInterval(() => {
-        setDuration((prev) => {
-          const newDuration = prev + 1;
-          dispatch(updateTimerDuration(newDuration));
-          return newDuration;
-        });
+        setDisplayTime(calculateElapsedTime(activeTimer));
       }, 1000);
     } else {
+      // Timer is paused or stopped
+      if (activeTimer) {
+        setDisplayTime(calculateElapsedTime(activeTimer));
+      } else {
+        setDisplayTime(0);
+      }
+      
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
@@ -66,14 +55,15 @@ function TimerWidget() {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isRunning, dispatch]);
+  }, [activeTimer]);
 
-  const formatTime = (seconds) => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const secs = seconds % 60;
-    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-  };
+  // Load timer data into form fields when activeTimer changes
+  useEffect(() => {
+    if (activeTimer) {
+      setSelectedProject(activeTimer.projectId?.toString() || '');
+      setDescription(activeTimer.description || '');
+    }
+  }, [activeTimer]);
 
   const handleStart = async () => {
     if (!selectedProject) {
@@ -88,8 +78,18 @@ function TimerWidget() {
       };
 
       const result = await dispatch(startTimer(timerData)).unwrap();
-      setIsRunning(true);
-      setDuration(0);
+      
+      // Create timer state with backend response
+      const newTimer = createTimerState({
+        id: result.id,
+        projectId: parseInt(selectedProject, 10),
+        description,
+      });
+      
+      // Save to Redux and localStorage
+      dispatch(setActiveTimer(newTimer));
+      saveActiveTimer(newTimer);
+      
       showSuccess('Timer started');
     } catch (error) {
       showError('Failed to start timer');
@@ -97,12 +97,20 @@ function TimerWidget() {
   };
 
   const handlePause = () => {
-    setIsRunning(false);
+    if (!activeTimer) return;
+    
+    const pausedTimer = pauseTimer(activeTimer);
+    dispatch(setActiveTimer(pausedTimer));
+    saveActiveTimer(pausedTimer);
     showSuccess('Timer paused');
   };
 
   const handleResume = () => {
-    setIsRunning(true);
+    if (!activeTimer) return;
+    
+    const resumedTimer = resumeTimer(activeTimer);
+    dispatch(setActiveTimer(resumedTimer));
+    saveActiveTimer(resumedTimer);
     showSuccess('Timer resumed');
   };
 
@@ -111,13 +119,28 @@ function TimerWidget() {
 
     try {
       await dispatch(stopTimer(activeTimer.id)).unwrap();
-      setIsRunning(false);
-      setDuration(0);
+      dispatch(clearActiveTimer());
+      saveActiveTimer(null);
       setSelectedProject('');
       setDescription('');
       showSuccess('Time entry saved');
     } catch (error) {
-      showError('Failed to stop timer');
+      // Check if it's a 404 error (timer not found)
+      const is404 = 
+        error?.status === 404 || 
+        error?.response?.status === 404 ||
+        error?.message?.includes('404') ||
+        error?.message?.includes('not found');
+      
+      if (is404) {
+        showError('Timer not found. Clearing local timer.');
+        dispatch(clearActiveTimer());
+        saveActiveTimer(null);
+        setSelectedProject('');
+        setDescription('');
+      } else {
+        showError('Failed to stop timer');
+      }
     }
   };
 
@@ -130,10 +153,10 @@ function TimerWidget() {
     <div className="card">
       <div className="text-center mb-6">
         <h2 className="text-6xl font-bold text-foreground mb-2 font-mono">
-          {formatTime(duration)}
+          {formatDuration(displayTime)}
         </h2>
         <p className="text-muted-foreground">
-          {isRunning ? 'Timer running...' : activeTimer ? 'Timer paused' : t('noActiveTimer')}
+          {activeTimer && isTimerRunning(activeTimer) ? 'Timer running...' : activeTimer ? 'Timer paused' : t('noActiveTimer')}
         </p>
       </div>
 
@@ -178,7 +201,7 @@ function TimerWidget() {
             </div>
           )}
           <div className="flex gap-3">
-            {isRunning ? (
+            {isTimerRunning(activeTimer) ? (
               <Button variant="secondary" size="lg" onClick={handlePause} className="flex-1">
                 <PauseIcon className="h-6 w-6 mr-2" />
                 Pause

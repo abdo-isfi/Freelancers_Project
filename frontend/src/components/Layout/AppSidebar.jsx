@@ -12,6 +12,7 @@ import {
   Menu,
 } from 'lucide-react';
 import { ThemeToggle } from '../ui/theme-toggle';
+import GlobalTimerIndicator from './GlobalTimerIndicator';
 
 const AppSidebar = ({ user }) => {
   const { t } = useTranslation();
@@ -40,6 +41,11 @@ const AppSidebar = ({ user }) => {
 
         {/* Navigation */}
         <nav className="flex-grow p-4 space-y-1 overflow-y-auto">
+            {/* Global Timer Indicator */}
+            <div className="mb-4">
+                <GlobalTimerIndicator />
+            </div>
+
             {navItems.map((item) => (
                 <NavLink
                     key={item.name}

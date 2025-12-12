@@ -112,7 +112,8 @@ const AuthPage = () => {
       </AnimatePresence>
 
       <div 
-        className="card w-[95%] lg:w-[75%] xl:w-[70%] 2xl:w-[65%] h-[650px] md:h-[700px] relative flex overflow-hidden rounded-3xl shadow-2xl bg-[var(--color-surface)] border border-[var(--color-border)]"
+        className="card w-[95%] lg:w-[75%] xl:w-[70%] 2xl:w-[65%] h-[
+650px] md:h-[700px] relative flex overflow-hidden rounded-3xl shadow-2xl bg-[var(--color-surface)] border border-[var(--color-border)]"
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}

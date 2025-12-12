@@ -12,6 +12,7 @@ import { formatDate } from '../utils/formatDate';
 import { formatCurrency } from '../utils/formatCurrency';
 import toast from 'react-hot-toast';
 import { AnimatedText } from '../components/ui/animated-shiny-text';
+import { useConfirm } from '../hooks/useConfirm.jsx';
 
 const statusColors = {
   active: 'bg-green-100 text-green-800',
@@ -34,6 +35,7 @@ function ProjectsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
+  const { confirm, ConfirmDialog } = useConfirm();
 
   useEffect(() => {
     dispatch(fetchProjects({ page: currentPage, limit: 20 }));
@@ -55,7 +57,15 @@ function ProjectsPage() {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this project?')) {
+    const confirmed = await confirm({
+      title: 'Delete Project',
+      message: 'Are you sure you want to delete this project? This action cannot be undone.',
+      confirmText: 'Delete',
+      cancelText: 'Cancel',
+      variant: 'danger'
+    });
+
+    if (confirmed) {
       try {
         await dispatch(deleteProject(id)).unwrap();
         toast.success('Project deleted successfully');
@@ -209,6 +219,9 @@ function ProjectsPage() {
         onClose={handleCloseModal}
         project={selectedProject}
       />
+
+      {/* Confirm Dialog */}
+      <ConfirmDialog />
     </div>
   );
 }

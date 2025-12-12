@@ -99,7 +99,6 @@ const projectsSlice = createSlice({
         state.loading = false;
         // Handle potential different response structures
         const payload = action.payload;
-        console.log('fetchProjects.fulfilled payload RE-CHECK:', payload);
         if (Array.isArray(payload)) {
             state.items = payload;
         } else if (Array.isArray(payload.data)) {
@@ -126,7 +125,6 @@ const projectsSlice = createSlice({
         } else {
             state.items = [];
             state.pagination = initialState.pagination;
-            console.warn('Unexpected projects response structure:', payload);
         }
       })
       .addCase(fetchProjects.rejected, (state, action) => {

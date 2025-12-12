@@ -5,13 +5,23 @@ import Button from '../Common/Button';
 import EmptyState from '../Common/EmptyState';
 import { deleteTimeEntry } from '../../store/timeEntriesSlice';
 import { showSuccess, showError } from '../../utils/toast';
+import { useConfirm } from '../../hooks/useConfirm.jsx';
 
 function TimeEntryTable({ entries = [], onEdit }) {
   const dispatch = useDispatch();
   const { items: projects } = useSelector((state) => state.projects);
+  const { confirm, ConfirmDialog } = useConfirm();
 
   const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this time entry?')) {
+    const confirmed = await confirm({
+      title: 'Delete Time Entry',
+      message: 'Are you sure you want to delete this time entry? This action cannot be undone.',
+      confirmText: 'Delete',
+      cancelText: 'Cancel',
+      variant: 'danger'
+    });
+
+    if (confirmed) {
       try {
         await dispatch(deleteTimeEntry(id)).unwrap();
         showSuccess('Time entry deleted');
@@ -98,6 +108,7 @@ function TimeEntryTable({ entries = [], onEdit }) {
           ))}
         </tbody>
       </table>
+      <ConfirmDialog />
     </div>
   );
 }

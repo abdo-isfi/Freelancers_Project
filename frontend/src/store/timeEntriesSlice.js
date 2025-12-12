@@ -127,10 +127,9 @@ const timeEntriesSlice = createSlice({
         } else if (Array.isArray(payload.items)) {
              state.items = payload.items;
              state.pagination = payload.pagination || state.pagination;
-        } else {
-            state.items = [];
-            console.warn('Unexpected timeEntries response structure:', payload);
-        }
+         } else {
+             state.items = [];
+         }
       })
       .addCase(fetchTimeEntries.rejected, (state, action) => {
         state.loading = false;
@@ -204,7 +203,12 @@ const timeEntriesSlice = createSlice({
       .addCase(stopTimer.fulfilled, (state, action) => {
         state.loading = false;
         state.activeTimer = null;
-        state.items.unshift(action.payload);
+        const index = state.items.findIndex(e => e.id === action.payload.id);
+        if (index !== -1) {
+          state.items[index] = action.payload;
+        } else {
+          state.items.unshift(action.payload);
+        }
       })
       .addCase(stopTimer.rejected, (state, action) => {
         state.loading = false;

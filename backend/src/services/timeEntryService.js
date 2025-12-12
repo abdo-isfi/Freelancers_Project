@@ -220,6 +220,7 @@ class TimeEntryService {
         id: entry.Task.id,
         title: entry.Task.title,
       } : null,
+      date: entry.date,
       startTime: entry.start_time,
       endTime: entry.end_time,
       durationMinutes: entry.duration_minutes,

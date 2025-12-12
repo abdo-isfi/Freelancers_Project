@@ -26,8 +26,8 @@ export const createTimeEntry = async (entryData) => {
 };
 
 // Start timer
-export const startTimer = async (taskId) => {
-  const response = await api.post('/time-entries/start', { taskId });
+export const startTimer = async (timerData) => {
+  const response = await api.post('/time-entries/start', timerData);
   return response.data;
 };
 

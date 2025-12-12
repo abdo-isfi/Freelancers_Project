@@ -93,7 +93,6 @@ const tasksSlice = createSlice({
              state.pagination = payload.pagination || state.pagination;
         } else {
             state.items = [];
-            console.warn('Unexpected tasks response structure:', payload);
         }
       })
       .addCase(fetchTasks.rejected, (state, action) => {
