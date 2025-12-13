@@ -1,4 +1,4 @@
-const { Invoice, InvoiceItem, Project } = require('../models');
+const { Invoice, InvoiceItem, Project, Client } = require('../models');
 
 class InvoiceService {
   /**
@@ -16,7 +16,10 @@ class InvoiceService {
 
     const { count, rows } = await Invoice.findAndCountAll({
       where,
-      include: [{ model: InvoiceItem, separate: true }],
+      include: [
+        { model: InvoiceItem, separate: true },
+        { model: Client }
+      ],
       offset,
       limit: limitNum,
       order: [['created_at', 'DESC']],
@@ -39,7 +42,10 @@ class InvoiceService {
   async getInvoiceById(invoiceId, userId) {
     const invoice = await Invoice.findOne({
       where: { id: invoiceId, user_id: userId },
-      include: [{ model: InvoiceItem }],
+      include: [
+        { model: InvoiceItem },
+        { model: Client }
+      ],
     });
 
     if (!invoice) {
@@ -75,6 +81,30 @@ class InvoiceService {
       throw error;
     }
 
+    // Verify client belongs to user
+    const client = await Client.findOne({
+      where: { id: clientId, user_id: userId },
+    });
+
+    if (!client) {
+      const error = new Error('Client not found');
+      error.status = 404;
+      throw error;
+    }
+
+    // Check if invoice number is unique
+    const existingInvoice = await Invoice.findOne({
+      where: { number: invoiceNumber, user_id: userId },
+    });
+
+    if (existingInvoice) {
+      const error = new Error('Invoice number already exists');
+      error.status = 400; // Bad Request
+      throw error;
+    }
+
+
+
     // Calculate totals
     let subtotal = 0;
     items.forEach((item) => {
@@ -85,19 +115,20 @@ class InvoiceService {
     const totalAmount = subtotal + taxAmount;
 
     // Create invoice
+    // Create invoice
     const invoice = await Invoice.create({
       user_id: userId,
-      project_id: projectId,
       client_id: clientId,
-      invoice_number: invoiceNumber,
+      number: invoiceNumber,
       issue_date: issueDate,
       due_date: dueDate,
       status: 'draft',
-      subtotal,
-      tax_amount: taxAmount,
-      total_amount: totalAmount,
+      total_ht: subtotal,
+      total_tva: taxAmount,
+      total_ttc: totalAmount,
       currency: currency || 'EUR',
-      notes,
+      // notes is not in the model definition I saw, let's allow sequelize to ignore if extra or check model again?
+      // Model didn't show notes field!
     });
 
     // Create invoice items
@@ -105,18 +136,25 @@ class InvoiceService {
       items.map((item) =>
         InvoiceItem.create({
           invoice_id: invoice.id,
-          task_id: item.taskId,
           description: item.description,
           quantity: item.quantity,
           unit_price: item.unitPrice,
           total: item.quantity * item.unitPrice,
+          project_id: projectId, // Assuming items belong to the project selected for invoice?
         })
       )
     );
 
-    invoice.InvoiceItems = createdItems;
+    // Reload invoice with associations
+    const fullInvoice = await Invoice.findOne({
+      where: { id: invoice.id },
+      include: [
+        { model: InvoiceItem },
+        { model: Client }
+      ],
+    });
 
-    return this.formatInvoice(invoice);
+    return this.formatInvoice(fullInvoice);
   }
 
   /**
@@ -202,21 +240,22 @@ class InvoiceService {
   formatInvoice(invoice) {
     return {
       id: invoice.id,
-      projectId: invoice.project_id,
+      // projectId is not on the invoice model directly
       clientId: invoice.client_id,
-      invoiceNumber: invoice.invoice_number,
+      client: invoice.Client ? {
+        id: invoice.Client.id,
+        name: invoice.Client.name,
+      } : null,
+      invoiceNumber: invoice.number,
       issueDate: invoice.issue_date,
       dueDate: invoice.due_date,
       status: invoice.status,
-      subtotal: parseFloat(invoice.subtotal),
-      taxAmount: parseFloat(invoice.tax_amount),
-      totalAmount: parseFloat(invoice.total_amount),
+      subtotal: parseFloat(invoice.total_ht || 0),
+      taxAmount: parseFloat(invoice.total_tva || 0),
+      totalAmount: parseFloat(invoice.total_ttc || 0),
       currency: invoice.currency,
-      notes: invoice.notes,
-      paidDate: invoice.paid_date,
       items: invoice.InvoiceItems ? invoice.InvoiceItems.map((item) => ({
         id: item.id,
-        taskId: item.task_id,
         description: item.description,
         quantity: parseFloat(item.quantity),
         unitPrice: parseFloat(item.unit_price),

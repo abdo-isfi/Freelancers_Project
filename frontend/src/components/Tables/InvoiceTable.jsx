@@ -10,6 +10,14 @@ import { DocumentTextIcon } from '@heroicons/react/24/solid';
 import EmptyState from '../Common/EmptyState';
 import { deleteInvoice, markInvoiceAsPaid, downloadInvoice } from '../../store/invoicesSlice';
 import { showSuccess, showError } from '../../utils/toast';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '../../components/ui/table';
 
 function InvoiceTable({ invoices = [] }) {
   const dispatch = useDispatch();
@@ -37,6 +45,7 @@ function InvoiceTable({ invoices = [] }) {
       await dispatch(downloadInvoice(id)).unwrap();
       showSuccess('Invoice downloaded');
     } catch (error) {
+      console.error(error);
       showError('Failed to download invoice');
     }
   };
@@ -55,9 +64,9 @@ function InvoiceTable({ invoices = [] }) {
 
   const getStatusBadge = (status) => {
     const badges = {
-      paid: 'bg-green-100 text-green-800',
-      unpaid: 'bg-yellow-100 text-yellow-800',
-      overdue: 'bg-red-100 text-red-800',
+      paid: 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300',
+      unpaid: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-300',
+      overdue: 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300',
     };
     return badges[status] || badges.unpaid;
   };
@@ -73,102 +82,84 @@ function InvoiceTable({ invoices = [] }) {
   }
 
   return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-border">
-        <thead>
-          <tr>
-            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-              Invoice #
-            </th>
-            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-              Client
-            </th>
-            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-              Date
-            </th>
-            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-              Due Date
-            </th>
-            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-              Amount
-            </th>
-            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-              Status
-            </th>
-            <th className="px-4 py-3 text-right text-xs font-medium text-muted-foreground uppercase">
-              Actions
-            </th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-border">
-          {invoices.map((invoice) => (
-            <tr
-              key={invoice.id}
-              className="hover:bg-muted/50 cursor-pointer"
-              onClick={() => navigate(`/invoices/${invoice.id}`)}
-            >
-              <td className="px-4 py-3 text-sm text-foreground font-medium">
-                {invoice.invoiceNumber}
-              </td>
-              <td className="px-4 py-3 text-sm text-foreground">
-                {getClientName(invoice.clientId)}
-              </td>
-              <td className="px-4 py-3 text-sm text-muted-foreground">
-                {new Date(invoice.date).toLocaleDateString()}
-              </td>
-              <td className="px-4 py-3 text-sm text-muted-foreground">
-                {invoice.dueDate ? new Date(invoice.dueDate).toLocaleDateString() : 'N/A'}
-              </td>
-              <td className="px-4 py-3 text-sm text-foreground font-medium">
-                ${invoice.total?.toFixed(2)}
-              </td>
-              <td className="px-4 py-3 text-sm">
-                <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusBadge(invoice.status)}`}>
-                  {invoice.status}
-                </span>
-              </td>
-              <td className="px-4 py-3 text-sm text-right">
-                <div className="flex justify-end gap-2">
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Invoice #</TableHead>
+          <TableHead>Client</TableHead>
+          <TableHead>Date</TableHead>
+          <TableHead>Due Date</TableHead>
+          <TableHead>Amount</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead className="text-right">Actions</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {invoices.map((invoice) => (
+          <TableRow
+            key={invoice.id}
+            className="cursor-pointer"
+            onClick={() => navigate(`/invoices/${invoice.id}`)}
+          >
+            <TableCell className="font-medium text-foreground">
+              {invoice.invoiceNumber}
+            </TableCell>
+            <TableCell>{getClientName(invoice.clientId)}</TableCell>
+            <TableCell className="text-muted-foreground">
+              {new Date(invoice.date).toLocaleDateString()}
+            </TableCell>
+            <TableCell className="text-muted-foreground">
+              {invoice.dueDate ? new Date(invoice.dueDate).toLocaleDateString() : 'N/A'}
+            </TableCell>
+            <TableCell className="font-medium">
+              ${invoice.total?.toFixed(2)}
+            </TableCell>
+            <TableCell>
+              <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusBadge(invoice.status)}`}>
+                {invoice.status}
+              </span>
+            </TableCell>
+            <TableCell className="text-right">
+              <div className="flex justify-end gap-2">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/invoices/${invoice.id}`);
+                  }}
+                  className="p-1 rounded-md text-muted-foreground hover:text-primary hover:bg-muted transition-colors"
+                  title="View"
+                >
+                  <EyeIcon className="h-5 w-5" />
+                </button>
+                <button
+                  onClick={(e) => handleDownload(invoice.id, e)}
+                  className="p-1 rounded-md text-muted-foreground hover:text-blue-500 hover:bg-muted transition-colors"
+                  title="Download"
+                >
+                  <ArrowDownTrayIcon className="h-5 w-5" />
+                </button>
+                {invoice.status !== 'paid' && (
                   <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate(`/invoices/${invoice.id}`);
-                    }}
-                    className="text-primary hover:text-primary/80 transition-colors"
-                    title="View"
+                    onClick={(e) => handleMarkAsPaid(invoice.id, e)}
+                    className="p-1 rounded-md text-muted-foreground hover:text-green-500 hover:bg-muted transition-colors"
+                    title="Mark as Paid"
                   >
-                    <EyeIcon className="h-5 w-5" />
+                    <CheckCircleIcon className="h-5 w-5" />
                   </button>
-                  <button
-                    onClick={(e) => handleDownload(invoice.id, e)}
-                    className="text-blue-500 hover:text-blue-600 transition-colors"
-                    title="Download"
-                  >
-                    <ArrowDownTrayIcon className="h-5 w-5" />
-                  </button>
-                  {invoice.status !== 'paid' && (
-                    <button
-                      onClick={(e) => handleMarkAsPaid(invoice.id, e)}
-                      className="text-green-500 hover:text-green-600 transition-colors"
-                      title="Mark as Paid"
-                    >
-                      <CheckCircleIcon className="h-5 w-5" />
-                    </button>
-                  )}
-                  <button
-                    onClick={(e) => handleDelete(invoice.id, e)}
-                    className="text-red-500 hover:text-red-600 transition-colors"
-                    title="Delete"
-                  >
-                    <TrashIcon className="h-5 w-5" />
-                  </button>
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+                )}
+                <button
+                  onClick={(e) => handleDelete(invoice.id, e)}
+                  className="p-1 rounded-md text-muted-foreground hover:text-destructive hover:bg-muted transition-colors"
+                  title="Delete"
+                >
+                  <TrashIcon className="h-5 w-5" />
+                </button>
+              </div>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 }
 

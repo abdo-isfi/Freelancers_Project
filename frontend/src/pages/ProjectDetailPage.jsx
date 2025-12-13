@@ -12,11 +12,21 @@ import Button from '../components/Common/Button';
 import LoadingSpinner from '../components/Common/LoadingSpinner';
 import ErrorMessage from '../components/Common/ErrorMessage';
 import EmptyState from '../components/Common/EmptyState';
+import ConfirmationModal from '../components/ui/confirmation-modal';
 import { fetchProjects, deleteProject } from '../store/projectsSlice';
 import { fetchTasks } from '../store/tasksSlice';
 import { fetchTimeEntries } from '../store/timeEntriesSlice';
 import { fetchInvoices } from '../store/invoicesSlice';
 import { AnimatedText } from '../components/ui/animated-shiny-text';
+import toast from 'react-hot-toast';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '../components/ui/table';
 
 function ProjectDetailPage() {
   const { id } = useParams();
@@ -29,6 +39,10 @@ function ProjectDetailPage() {
   const { items: timeEntries, loading: timeEntriesLoading } = useSelector((state) => state.timeEntries);
   const { items: invoices, loading: invoicesLoading } = useSelector((state) => state.invoices);
 
+  // Delete modal state
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const project = projects.find((p) => p.id === parseInt(id));
 
   useEffect(() => {
@@ -40,10 +54,21 @@ function ProjectDetailPage() {
     dispatch(fetchInvoices({ projectId: id }));
   }, [dispatch, id, project]);
 
-  const handleDelete = async () => {
-    if (window.confirm('Are you sure you want to delete this project?')) {
-      await dispatch(deleteProject(id));
+  const handleDeleteClick = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    setIsDeleting(true);
+    try {
+      await dispatch(deleteProject(id)).unwrap();
+      toast.success('Project deleted successfully');
       navigate('/projects');
+    } catch (error) {
+      toast.error(error.message || 'Failed to delete project');
+    } finally {
+      setIsDeleting(false);
+      setIsDeleteModalOpen(false);
     }
   };
 
@@ -106,7 +131,7 @@ function ProjectDetailPage() {
               <PencilIcon className="h-5 w-5 mr-2" />
               Edit
             </Button>
-            <Button variant="danger" onClick={handleDelete}>
+            <Button variant="danger" onClick={handleDeleteClick}>
               <TrashIcon className="h-5 w-5 mr-2" />
               Delete
             </Button>
@@ -225,167 +250,183 @@ function ProjectDetailPage() {
       )}
 
       {activeTab === 'tasks' && (
-        <div className="card">
+        <div className="card p-0 overflow-hidden">
           {tasksLoading ? (
-            <LoadingSpinner />
-          ) : projectTasks.length > 0 ? (
-            <div className="space-y-3">
-              {projectTasks.map((task) => (
-                <div
-                  key={task.id}
-                  className="p-4 border border-border rounded-lg hover:border-primary cursor-pointer transition-colors"
-                  onClick={() => navigate(`/tasks`)}
-                >
-                  <div className="flex justify-between items-start">
-                    <div className="flex items-start gap-3">
-                      {task.status === 'completed' ? (
-                        <CheckCircleIcon className="h-5 w-5 text-green-500 mt-0.5" />
-                      ) : (
-                        <div className="h-5 w-5 border-2 border-muted-foreground rounded-full mt-0.5" />
-                      )}
-                      <div>
-                        <h3 className="font-semibold text-foreground">{task.title}</h3>
-                        <p className="text-sm text-muted-foreground mt-1">{task.description}</p>
-                      </div>
-                    </div>
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        task.priority === 'high'
-                          ? 'bg-red-100 text-red-800'
-                          : task.priority === 'medium'
-                          ? 'bg-yellow-100 text-yellow-800'
-                          : 'bg-gray-100 text-gray-800'
-                      }`}
-                    >
-                      {task.priority}
-                    </span>
-                  </div>
-                </div>
-              ))}
+            <div className="p-6">
+              <LoadingSpinner />
             </div>
+          ) : projectTasks.length > 0 ? (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Title</TableHead>
+                  <TableHead>Priority</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {projectTasks.map((task) => (
+                  <TableRow
+                    key={task.id}
+                    className="cursor-pointer hover:bg-muted/50"
+                    onClick={() => navigate(`/tasks`)}
+                  >
+                    <TableCell>
+                      {task.status === 'completed' ? (
+                        <CheckCircleIcon className="h-5 w-5 text-green-500" />
+                      ) : (
+                        <div className="h-5 w-5 border-2 border-muted-foreground rounded-full" />
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <div className="font-medium text-foreground">{task.title}</div>
+                      <div className="text-sm text-muted-foreground">{task.description}</div>
+                    </TableCell>
+                    <TableCell>
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          task.priority === 'high'
+                            ? 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300'
+                            : task.priority === 'medium'
+                            ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-300'
+                            : 'bg-gray-100 text-gray-800 dark:bg-gray-900/40 dark:text-gray-300'
+                        }`}
+                      >
+                        {task.priority}
+                      </span>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           ) : (
-            <EmptyState
-              title="No tasks yet"
-              description="This project doesn't have any tasks."
-            />
+            <div className="p-6">
+              <EmptyState
+                title="No tasks yet"
+                description="This project doesn't have any tasks."
+              />
+            </div>
           )}
         </div>
       )}
 
       {activeTab === 'time' && (
-        <div className="card">
+        <div className="card p-0 overflow-hidden">
           {timeEntriesLoading ? (
-            <LoadingSpinner />
-          ) : projectTimeEntries.length > 0 ? (
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-border">
-                <thead>
-                  <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                      Date
-                    </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                      Description
-                    </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                      Duration
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border">
-                  {projectTimeEntries.map((entry) => (
-                    <tr key={entry.id} className="hover:bg-muted/50">
-                      <td className="px-4 py-3 text-sm text-foreground">
-                        {new Date(entry.date).toLocaleDateString()}
-                      </td>
-                      <td className="px-4 py-3 text-sm text-muted-foreground">
-                        {entry.description || 'No description'}
-                      </td>
-                      <td className="px-4 py-3 text-sm text-foreground font-medium">
-                        <div className="flex items-center">
-                          <ClockIcon className="h-4 w-4 mr-1 text-muted-foreground" />
-                          {entry.duration?.toFixed(1)}h
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="p-6">
+              <LoadingSpinner />
             </div>
+          ) : projectTimeEntries.length > 0 ? (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Description</TableHead>
+                  <TableHead>Duration</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {projectTimeEntries.map((entry) => (
+                  <TableRow key={entry.id} className="cursor-pointer hover:bg-muted/50">
+                    <TableCell className="text-muted-foreground">
+                      {new Date(entry.date).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell className="text-muted-foreground">
+                      {entry.description || 'No description'}
+                    </TableCell>
+                    <TableCell className="font-medium text-foreground">
+                      <div className="flex items-center">
+                        <ClockIcon className="h-4 w-4 mr-1 text-muted-foreground" />
+                        {entry.duration?.toFixed(1)}h
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           ) : (
-            <EmptyState
-              title="No time entries yet"
-              description="No time has been tracked for this project."
-            />
+            <div className="p-6">
+              <EmptyState
+                title="No time entries yet"
+                description="No time has been tracked for this project."
+              />
+            </div>
           )}
         </div>
       )}
 
       {activeTab === 'invoices' && (
-        <div className="card">
+        <div className="card p-0 overflow-hidden">
           {invoicesLoading ? (
-            <LoadingSpinner />
-          ) : projectInvoices.length > 0 ? (
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-border">
-                <thead>
-                  <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                      Invoice #
-                    </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                      Date
-                    </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                      Amount
-                    </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                      Status
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border">
-                  {projectInvoices.map((invoice) => (
-                    <tr
-                      key={invoice.id}
-                      className="hover:bg-muted/50 cursor-pointer"
-                      onClick={() => navigate(`/invoices/${invoice.id}`)}
-                    >
-                      <td className="px-4 py-3 text-sm text-foreground">
-                        {invoice.invoiceNumber}
-                      </td>
-                      <td className="px-4 py-3 text-sm text-muted-foreground">
-                        {new Date(invoice.date).toLocaleDateString()}
-                      </td>
-                      <td className="px-4 py-3 text-sm text-foreground font-medium">
-                        ${invoice.total?.toFixed(2)}
-                      </td>
-                      <td className="px-4 py-3 text-sm">
-                        <span
-                          className={`px-2 py-1 rounded-full text-xs font-medium ${
-                            invoice.status === 'paid'
-                              ? 'bg-green-100 text-green-800'
-                              : invoice.status === 'overdue'
-                              ? 'bg-red-100 text-red-800'
-                              : 'bg-yellow-100 text-yellow-800'
-                          }`}
-                        >
-                          {invoice.status}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="p-6">
+              <LoadingSpinner />
             </div>
+          ) : projectInvoices.length > 0 ? (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Invoice #</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Amount</TableHead>
+                  <TableHead>Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {projectInvoices.map((invoice) => (
+                  <TableRow
+                    key={invoice.id}
+                    className="cursor-pointer hover:bg-muted/50"
+                    onClick={() => navigate(`/invoices/${invoice.id}`)}
+                  >
+                    <TableCell className="font-medium text-foreground">
+                      {invoice.invoiceNumber}
+                    </TableCell>
+                    <TableCell className="text-muted-foreground">
+                      {new Date(invoice.date).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell className="font-medium text-foreground">
+                      ${invoice.total?.toFixed(2)}
+                    </TableCell>
+                    <TableCell>
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          invoice.status === 'paid'
+                            ? 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300'
+                            : invoice.status === 'overdue'
+                            ? 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300'
+                            : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-300'
+                        }`}
+                      >
+                        {invoice.status}
+                      </span>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           ) : (
-            <EmptyState
-              title="No invoices yet"
-              description="This project doesn't have any invoices."
-            />
+            <div className="p-6">
+              <EmptyState
+                title="No invoices yet"
+                description="This project doesn't have any invoices."
+              />
+            </div>
           )}
         </div>
       )}
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => !isDeleting && setIsDeleteModalOpen(false)}
+        onConfirm={handleConfirmDelete}
+        title="Delete Project"
+        message={`Are you sure you want to delete ${project?.name}? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        variant="danger"
+        loading={isDeleting}
+      />
     </div>
   );
 }

@@ -18,7 +18,7 @@ export const fetchInvoiceById = createAsyncThunk(
   'invoices/fetchInvoiceById',
   async (id, { rejectWithValue }) => {
     try {
-      const response = await invoicesAPI.getInvoiceById(id);
+      const response = await invoicesAPI.getInvoice(id);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data);
@@ -66,7 +66,7 @@ export const markInvoiceAsPaid = createAsyncThunk(
   'invoices/markAsPaid',
   async (id, { rejectWithValue }) => {
     try {
-      const response = await invoicesAPI.markAsPaid(id);
+      const response = await invoicesAPI.markInvoicePaid(id);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data);

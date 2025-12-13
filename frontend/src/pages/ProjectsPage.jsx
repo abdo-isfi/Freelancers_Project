@@ -13,12 +13,20 @@ import { formatCurrency } from '../utils/formatCurrency';
 import toast from 'react-hot-toast';
 import { AnimatedText } from '../components/ui/animated-shiny-text';
 import { useConfirm } from '../hooks/useConfirm.jsx';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '../components/ui/table';
 
 const statusColors = {
-  active: 'bg-green-100 text-green-800',
-  on_hold: 'bg-yellow-100 text-yellow-800',
-  completed: 'bg-blue-100 text-blue-800',
-  cancelled: 'bg-red-100 text-red-800',
+  active: 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300',
+  on_hold: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-300',
+  completed: 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300',
+  cancelled: 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300',
 };
 
 const statusLabels = {
@@ -125,82 +133,64 @@ function ProjectsPage() {
         </div>
       ) : (
         <>
-          <div className="card overflow-hidden p-0">
-            <table className="min-w-full divide-y divide-border">
-              <thead className="bg-muted/50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    {t('projectName')}
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    {t('client')}
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    {t('status')}
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    {t('budget')}
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    {t('date')}
-                  </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    {t('actions')}
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-card divide-y divide-border">
-                {projects.map((project) => (
-                  <tr key={project.id} className="hover:bg-accent/50">
-                    <td className="px-6 py-4 text-left">
-                      <div className="text-sm font-medium text-foreground">
-                        {project.name}
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>{t('projectName')}</TableHead>
+                <TableHead>{t('client')}</TableHead>
+                <TableHead>{t('status')}</TableHead>
+                <TableHead>{t('budget')}</TableHead>
+                <TableHead>{t('date')}</TableHead>
+                <TableHead className="text-right">{t('actions')}</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {projects.map((project) => (
+                <TableRow key={project.id}>
+                  <TableCell>
+                    <div className="text-sm font-medium text-foreground">
+                      {project.name}
+                    </div>
+                    {project.description && (
+                      <div className="text-sm text-muted-foreground truncate max-w-xs">
+                        {project.description}
                       </div>
-                      {project.description && (
-                        <div className="text-sm text-muted-foreground truncate max-w-xs">
-                          {project.description}
-                        </div>
-                      )}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-left">
-                      <div className="text-sm text-muted-foreground">
-                        {project.Client?.name || '-'}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-left">
-                      <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[project.status]}`}>
-                        {statusLabels[project.status]}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-left">
-                      <div className="text-sm text-muted-foreground">
-                        {project.budget ? formatCurrency(project.budget) : '-'}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-left">
-                      <div className="text-sm text-muted-foreground">
-                        {project.startDate ? formatDate(project.startDate) : '-'}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <button
-                        onClick={() => handleEditProject(project)}
-                        className="text-primary-600 hover:text-primary-900 mr-3"
-                      >
-                        <PencilIcon className="h-5 w-5" />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(project.id)}
-                        className="text-red-600 hover:text-red-900"
-                      >
-                        <TrashIcon className="h-5 w-5" />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                    )}
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {project.Client?.name || '-'}
+                  </TableCell>
+                  <TableCell>
+                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[project.status]}`}>
+                      {statusLabels[project.status]}
+                    </span>
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {project.budget ? formatCurrency(project.budget) : '-'}
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {project.startDate ? formatDate(project.startDate) : '-'}
+                  </TableCell>
+                  <TableCell className="text-right font-medium">
+                    <button
+                      onClick={() => handleEditProject(project)}
+                      className="text-primary hover:text-primary/90 mr-3 transition-colors"
+                      title={t('edit')}
+                    >
+                      <PencilIcon className="h-5 w-5" />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(project.id)}
+                      className="text-destructive hover:text-destructive/90 transition-colors"
+                      title={t('delete')}
+                    >
+                      <TrashIcon className="h-5 w-5" />
+                    </button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
 
           {pagination.totalPages > 1 && (
             <Pagination

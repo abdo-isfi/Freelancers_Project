@@ -1,6 +1,14 @@
 import { useState, useEffect } from 'react';
 import { fetchItems, createItem, updateItem, deleteItem } from '../api/itemsAPI';
 import { toast } from 'react-hot-toast';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from './ui/table';
 
 const ItemManager = () => {
   const [items, setItems] = useState([]);
@@ -27,6 +35,11 @@ const ItemManager = () => {
     }
   };
 
+  const resetForm = () => {
+    setFormData({ name: '', description: '' });
+    setEditingId(null);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name) return;
@@ -40,8 +53,7 @@ const ItemManager = () => {
         await createItem(formData);
         toast.success('Item created successfully');
       }
-      setFormData({ name: '', description: '' });
-      setEditingId(null);
+      resetForm();
       loadItems();
     } catch (error) {
       console.error('Failed to save item:', error);
@@ -120,48 +132,46 @@ const ItemManager = () => {
         </form>
       </div>
 
-      <div className="bg-card rounded-lg shadow-md overflow-hidden">
-        <table className="min-w-full divide-y divide-border">
-          <thead className="bg-muted">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">ID</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Name</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Description</th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="bg-card divide-y divide-border">
-            {items.map((item) => (
-              <tr key={item.id}>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">{item.id}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">{item.name}</td>
-                <td className="px-6 py-4 text-sm text-muted-foreground">{item.description}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <button
-                    onClick={() => handleEdit(item)}
-                    className="text-primary hover:text-primary/80 mr-3"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(item.id)}
-                    className="text-destructive hover:text-destructive/80"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-            {items.length === 0 && (
-              <tr>
-                <td colSpan="4" className="px-6 py-4 text-center text-sm text-muted-foreground">
-                  No items yet. Add one above!
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>ID</TableHead>
+            <TableHead>Name</TableHead>
+            <TableHead>Description</TableHead>
+            <TableHead className="text-right">Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {items.map((item) => (
+            <TableRow key={item.id}>
+              <TableCell className="text-muted-foreground">{item.id}</TableCell>
+              <TableCell className="font-medium text-foreground">{item.name}</TableCell>
+              <TableCell className="text-muted-foreground">{item.description}</TableCell>
+              <TableCell className="text-right font-medium">
+                <button
+                  onClick={() => handleEdit(item)}
+                  className="text-primary hover:text-primary/80 mr-3"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(item.id)}
+                  className="text-destructive hover:text-destructive/80"
+                >
+                  Delete
+                </button>
+              </TableCell>
+            </TableRow>
+          ))}
+          {items.length === 0 && (
+            <TableRow>
+              <TableCell colSpan="4" className="text-center text-muted-foreground">
+                No items yet. Add one above!
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
     </div>
   );
 };

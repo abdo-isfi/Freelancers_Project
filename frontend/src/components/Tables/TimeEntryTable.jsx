@@ -6,6 +6,14 @@ import EmptyState from '../Common/EmptyState';
 import { deleteTimeEntry } from '../../store/timeEntriesSlice';
 import { showSuccess, showError } from '../../utils/toast';
 import { useConfirm } from '../../hooks/useConfirm.jsx';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '../../components/ui/table';
 
 function TimeEntryTable({ entries = [], onEdit }) {
   const dispatch = useDispatch();
@@ -47,69 +55,55 @@ function TimeEntryTable({ entries = [], onEdit }) {
   }
 
   return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-border">
-        <thead>
-          <tr>
-            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-              Date
-            </th>
-            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-              Project
-            </th>
-            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-              Description
-            </th>
-            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-              Duration
-            </th>
-            <th className="px-4 py-3 text-right text-xs font-medium text-muted-foreground uppercase">
-              Actions
-            </th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-border">
+    <>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Date</TableHead>
+            <TableHead>Project</TableHead>
+            <TableHead>Description</TableHead>
+            <TableHead>Duration</TableHead>
+            <TableHead className="text-right">Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {entries.map((entry) => (
-            <tr key={entry.id} className="hover:bg-muted/50">
-              <td className="px-4 py-3 text-sm text-foreground">
-                {new Date(entry.date).toLocaleDateString()}
-              </td>
-              <td className="px-4 py-3 text-sm text-foreground">
-                {getProjectName(entry.projectId)}
-              </td>
-              <td className="px-4 py-3 text-sm text-muted-foreground">
+            <TableRow key={entry.id}>
+              <TableCell>{new Date(entry.date).toLocaleDateString()}</TableCell>
+              <TableCell>{getProjectName(entry.projectId)}</TableCell>
+              <TableCell className="text-muted-foreground">
                 {entry.description || 'No description'}
-              </td>
-              <td className="px-4 py-3 text-sm text-foreground font-medium">
+              </TableCell>
+              <TableCell className="font-medium">
                 <div className="flex items-center">
                   <ClockIcon className="h-4 w-4 mr-1 text-muted-foreground" />
                   {entry.duration?.toFixed(2)}h
                 </div>
-              </td>
-              <td className="px-4 py-3 text-sm text-right">
+              </TableCell>
+              <TableCell className="text-right">
                 <div className="flex justify-end gap-2">
                   <button
                     onClick={() => onEdit && onEdit(entry)}
-                    className="text-primary hover:text-primary/80 transition-colors"
+                    className="p-1 rounded-md text-muted-foreground hover:text-primary hover:bg-muted transition-colors"
                     title="Edit"
                   >
                     <PencilIcon className="h-5 w-5" />
                   </button>
                   <button
                     onClick={() => handleDelete(entry.id)}
-                    className="text-red-500 hover:text-red-600 transition-colors"
+                    className="p-1 rounded-md text-muted-foreground hover:text-destructive hover:bg-muted transition-colors"
                     title="Delete"
                   >
                     <TrashIcon className="h-5 w-5" />
                   </button>
                 </div>
-              </td>
-            </tr>
+              </TableCell>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
       <ConfirmDialog />
-    </div>
+    </>
   );
 }
 

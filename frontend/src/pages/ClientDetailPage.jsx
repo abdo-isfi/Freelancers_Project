@@ -13,10 +13,20 @@ import Button from '../components/Common/Button';
 import LoadingSpinner from '../components/Common/LoadingSpinner';
 import ErrorMessage from '../components/Common/ErrorMessage';
 import EmptyState from '../components/Common/EmptyState';
+import ConfirmationModal from '../components/ui/confirmation-modal';
 import { fetchClients, deleteClient } from '../store/clientsSlice';
 import { fetchProjects } from '../store/projectsSlice';
 import { fetchInvoices } from '../store/invoicesSlice';
 import { AnimatedText } from '../components/ui/animated-shiny-text';
+import toast from 'react-hot-toast';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '../components/ui/table';
 
 function ClientDetailPage() {
   const { id } = useParams();
@@ -28,6 +38,10 @@ function ClientDetailPage() {
   const { items: projects, loading: projectsLoading } = useSelector((state) => state.projects);
   const { items: invoices, loading: invoicesLoading } = useSelector((state) => state.invoices);
 
+  // Delete modal state
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const client = clients.find((c) => c.id === parseInt(id));
 
   useEffect(() => {
@@ -38,10 +52,21 @@ function ClientDetailPage() {
     dispatch(fetchInvoices({ clientId: id }));
   }, [dispatch, id, client]);
 
-  const handleDelete = async () => {
-    if (window.confirm('Are you sure you want to delete this client?')) {
-      await dispatch(deleteClient(id));
+  const handleDeleteClick = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    setIsDeleting(true);
+    try {
+      await dispatch(deleteClient(id)).unwrap();
+      toast.success('Client deleted successfully');
       navigate('/clients');
+    } catch (error) {
+      toast.error(error.message || 'Failed to delete client');
+    } finally {
+      setIsDeleting(false);
+      setIsDeleteModalOpen(false);
     }
   };
 
@@ -99,7 +124,7 @@ function ClientDetailPage() {
               <PencilIcon className="h-5 w-5 mr-2" />
               Edit
             </Button>
-            <Button variant="danger" onClick={handleDelete}>
+            <Button variant="danger" onClick={handleDeleteClick}>
               <TrashIcon className="h-5 w-5 mr-2" />
               Delete
             </Button>
@@ -175,111 +200,133 @@ function ClientDetailPage() {
       )}
 
       {activeTab === 'projects' && (
-        <div className="card">
+        <div className="card p-0 overflow-hidden">
           {projectsLoading ? (
-            <LoadingSpinner />
-          ) : clientProjects.length > 0 ? (
-            <div className="space-y-3">
-              {clientProjects.map((project) => (
-                <div
-                  key={project.id}
-                  className="p-4 border border-border rounded-lg hover:border-primary cursor-pointer transition-colors"
-                  onClick={() => navigate(`/projects/${project.id}`)}
-                >
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="font-semibold text-foreground">{project.name}</h3>
-                      <p className="text-sm text-muted-foreground mt-1">{project.description}</p>
-                    </div>
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        project.status === 'active'
-                          ? 'bg-green-100 text-green-800'
-                          : project.status === 'completed'
-                          ? 'bg-blue-100 text-blue-800'
-                          : 'bg-gray-100 text-gray-800'
-                      }`}
-                    >
-                      {project.status}
-                    </span>
-                  </div>
-                </div>
-              ))}
+            <div className="p-6">
+              <LoadingSpinner />
             </div>
+          ) : clientProjects.length > 0 ? (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Project Name</TableHead>
+                  <TableHead>Description</TableHead>
+                  <TableHead>Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {clientProjects.map((project) => (
+                  <TableRow 
+                    key={project.id}
+                    className="cursor-pointer hover:bg-muted/50"
+                    onClick={() => navigate(`/projects/${project.id}`)}
+                  >
+                    <TableCell className="font-medium text-foreground">
+                      {project.name}
+                    </TableCell>
+                    <TableCell className="text-muted-foreground max-w-md truncate">
+                      {project.description}
+                    </TableCell>
+                    <TableCell>
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          project.status === 'active'
+                            ? 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300'
+                            : project.status === 'completed'
+                            ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300'
+                            : 'bg-gray-100 text-gray-800 dark:bg-gray-900/40 dark:text-gray-300'
+                        }`}
+                      >
+                        {project.status}
+                      </span>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           ) : (
-            <EmptyState
-              title="No projects yet"
-              description="This client doesn't have any projects."
-            />
+            <div className="p-6">
+              <EmptyState
+                title="No projects yet"
+                description="This client doesn't have any projects."
+              />
+            </div>
           )}
         </div>
       )}
 
       {activeTab === 'invoices' && (
-        <div className="card">
+        <div className="card p-0 overflow-hidden">
           {invoicesLoading ? (
-            <LoadingSpinner />
-          ) : clientInvoices.length > 0 ? (
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-border">
-                <thead>
-                  <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                      Invoice #
-                    </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                      Date
-                    </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                      Amount
-                    </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                      Status
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border">
-                  {clientInvoices.map((invoice) => (
-                    <tr
-                      key={invoice.id}
-                      className="hover:bg-muted/50 cursor-pointer"
-                      onClick={() => navigate(`/invoices/${invoice.id}`)}
-                    >
-                      <td className="px-4 py-3 text-sm text-foreground">
-                        {invoice.invoiceNumber}
-                      </td>
-                      <td className="px-4 py-3 text-sm text-muted-foreground">
-                        {new Date(invoice.date).toLocaleDateString()}
-                      </td>
-                      <td className="px-4 py-3 text-sm text-foreground font-medium">
-                        ${invoice.total?.toFixed(2)}
-                      </td>
-                      <td className="px-4 py-3 text-sm">
-                        <span
-                          className={`px-2 py-1 rounded-full text-xs font-medium ${
-                            invoice.status === 'paid'
-                              ? 'bg-green-100 text-green-800'
-                              : invoice.status === 'overdue'
-                              ? 'bg-red-100 text-red-800'
-                              : 'bg-yellow-100 text-yellow-800'
-                          }`}
-                        >
-                          {invoice.status}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="p-6">
+              <LoadingSpinner />
             </div>
+          ) : clientInvoices.length > 0 ? (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Invoice #</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Amount</TableHead>
+                  <TableHead>Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {clientInvoices.map((invoice) => (
+                  <TableRow
+                    key={invoice.id}
+                    className="cursor-pointer hover:bg-muted/50"
+                    onClick={() => navigate(`/invoices/${invoice.id}`)}
+                  >
+                    <TableCell className="font-medium text-foreground">
+                      {invoice.invoiceNumber}
+                    </TableCell>
+                    <TableCell className="text-muted-foreground">
+                      {new Date(invoice.date).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell className="font-medium text-foreground">
+                      ${invoice.total?.toFixed(2)}
+                    </TableCell>
+                    <TableCell>
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          invoice.status === 'paid'
+                            ? 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300'
+                            : invoice.status === 'overdue'
+                            ? 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300'
+                            : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-300'
+                        }`}
+                      >
+                        {invoice.status}
+                      </span>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           ) : (
-            <EmptyState
-              title="No invoices yet"
-              description="This client doesn't have any invoices."
-            />
+            <div className="p-6">
+                <EmptyState
+                title="No invoices yet"
+                description="This client doesn't have any invoices."
+              />
+            </div>
           )}
         </div>
       )}
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => !isDeleting && setIsDeleteModalOpen(false)}
+        onConfirm={handleConfirmDelete}
+        title="Delete Client"
+        message={`Are you sure you want to delete ${client?.name}? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        variant="danger"
+        loading={isDeleting}
+      />
     </div>
   );
 }

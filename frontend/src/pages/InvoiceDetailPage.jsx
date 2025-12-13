@@ -18,6 +18,14 @@ import {
   downloadInvoice,
 } from '../store/invoicesSlice';
 import { AnimatedText } from '../components/ui/animated-shiny-text';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '../components/ui/table';
 
 function InvoiceDetailPage() {
   const { id } = useParams();
@@ -144,10 +152,10 @@ function InvoiceDetailPage() {
             <span
               className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
                 invoice.status === 'paid'
-                  ? 'bg-green-100 text-green-800'
+                  ? 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300'
                   : invoice.status === 'overdue'
-                  ? 'bg-red-100 text-red-800'
-                  : 'bg-yellow-100 text-yellow-800'
+                  ? 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300'
+                  : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-300'
               }`}
             >
               {invoice.status}
@@ -166,44 +174,34 @@ function InvoiceDetailPage() {
       {/* Line Items */}
       <div className="card">
         <h2 className="text-lg font-semibold text-foreground mb-4">Line Items</h2>
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-border">
-            <thead>
-              <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                  Description
-                </th>
-                <th className="px-4 py-3 text-right text-xs font-medium text-muted-foreground uppercase">
-                  Quantity
-                </th>
-                <th className="px-4 py-3 text-right text-xs font-medium text-muted-foreground uppercase">
-                  Rate
-                </th>
-                <th className="px-4 py-3 text-right text-xs font-medium text-muted-foreground uppercase">
-                  Amount
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {invoice.items?.map((item, index) => (
-                <tr key={index}>
-                  <td className="px-4 py-3 text-sm text-foreground">
-                    {item.description}
-                  </td>
-                  <td className="px-4 py-3 text-sm text-muted-foreground text-right">
-                    {item.quantity}
-                  </td>
-                  <td className="px-4 py-3 text-sm text-muted-foreground text-right">
-                    ${item.rate.toFixed(2)}
-                  </td>
-                  <td className="px-4 py-3 text-sm text-foreground font-medium text-right">
-                    ${(item.quantity * item.rate).toFixed(2)}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Description</TableHead>
+              <TableHead className="text-right">Quantity</TableHead>
+              <TableHead className="text-right">Rate</TableHead>
+              <TableHead className="text-right">Amount</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {invoice.items?.map((item, index) => (
+              <TableRow key={index}>
+                <TableCell className="text-foreground">
+                  {item.description}
+                </TableCell>
+                <TableCell className="text-muted-foreground text-right">
+                  {item.quantity}
+                </TableCell>
+                <TableCell className="text-muted-foreground text-right">
+                  ${item.rate.toFixed(2)}
+                </TableCell>
+                <TableCell className="font-medium text-right">
+                  ${(item.quantity * item.rate).toFixed(2)}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
 
         {/* Totals */}
         <div className="mt-6 border-t border-border pt-4">

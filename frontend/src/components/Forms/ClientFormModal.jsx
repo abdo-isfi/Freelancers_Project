@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { createClient, updateClient } from '../../store/clientsSlice';
-import Modal from '../Common/Modal';
+import Modal from '../ui/modal';
 import Input from '../Common/Input';
 import Button from '../Common/Button';
 import toast from 'react-hot-toast';
