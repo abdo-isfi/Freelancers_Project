@@ -42,6 +42,7 @@ class TimeEntryService {
   async createTimeEntry(userId, {
     projectId,
     taskId,
+    date,
     startTime,
     endTime,
     description,
@@ -58,21 +59,31 @@ class TimeEntryService {
       throw error;
     }
 
-    // Calculate duration if both start and end times are provided
+    // Combine date and time
+    let startDateTime = null;
+    let endDateTime = null;
     let durationMinutes = null;
-    if (startTime && endTime) {
-      const start = new Date(startTime);
-      const end = new Date(endTime);
-      durationMinutes = Math.round((end - start) / (1000 * 60));
+
+    if (date && startTime) {
+      startDateTime = new Date(`${date}T${startTime}`);
+    }
+
+    if (date && endTime) {
+      endDateTime = new Date(`${date}T${endTime}`);
+    }
+
+    // Calculate duration
+    if (startDateTime && endDateTime) {
+      durationMinutes = Math.round((endDateTime - startDateTime) / (1000 * 60));
     }
 
     const timeEntry = await TimeEntry.create({
       project_id: projectId,
-      task_id: taskId,
+      task_id: taskId || null,
       user_id: userId,
-      date: startTime ? new Date(startTime) : new Date(),
-      start_time: startTime,
-      end_time: endTime,
+      date: date || new Date(),
+      start_time: startDateTime || (startTime ? new Date(startTime) : new Date()), // Fallback for start tracking
+      end_time: endDateTime,
       duration_minutes: durationMinutes,
       description,
       is_billable: isBillable !== undefined ? isBillable : true,
@@ -226,8 +237,8 @@ class TimeEntryService {
       durationMinutes: entry.duration_minutes,
       description: entry.description,
       isBillable: entry.is_billable,
-      createdAt: entry.created_at,
-      updatedAt: entry.updated_at,
+      createdAt: entry.createdAt,
+      updatedAt: entry.updatedAt,
     };
   }
 }

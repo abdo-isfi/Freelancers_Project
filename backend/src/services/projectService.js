@@ -169,8 +169,8 @@ class ProjectService {
       status: project.status,
       startDate: project.start_date,
       endDateEstimated: project.end_date_estimated,
-      createdAt: project.created_at,
-      updatedAt: project.updated_at,
+      createdAt: project.createdAt,
+      updatedAt: project.updatedAt,
     };
   }
 }

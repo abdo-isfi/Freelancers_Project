@@ -43,40 +43,46 @@ const getInvoiceById = async (req, res, next) => {
 /**
  * Create invoice
  */
-const createInvoice = async (req, res, next) => {
-  try {
-    const userId = req.userId;
-    const {
-      projectId,
-      clientId,
-      invoiceNumber,
-      issueDate,
-      dueDate,
-      items,
-      notes,
-      currency,
-    } = req.body;
+  createInvoice: async (req, res, next) => {
+    try {
+      console.log('Creates Invoice Request Body:', JSON.stringify(req.body, null, 2));
+      const userId = req.userId;
+      const {
+        projectId,
+        clientId,
+        invoiceNumber,
+        issueDate,
+        dueDate,
+        items,
+        notes,
+        currency,
+        tax,
+        discount,
+      } = req.body;
 
-    const invoice = await invoiceService.createInvoice(userId, {
-      projectId,
-      clientId,
-      invoiceNumber,
-      issueDate,
-      dueDate,
-      items,
-      notes,
-      currency,
-    });
+      const invoice = await invoiceService.createInvoice(userId, {
+        projectId,
+        clientId,
+        invoiceNumber,
+        issueDate,
+        dueDate,
+        items,
+        notes,
+        currency,
+        tax,
+        discount,
+      });
 
-    res.status(201).json({
-      success: true,
-      message: 'Invoice created successfully',
-      data: invoice,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+      res.status(201).json({
+        success: true,
+        message: 'Invoice created successfully',
+        data: invoice,
+      });
+    } catch (error) {
+      console.error('Create Invoice Error:', error);
+      next(error);
+    }
+  },
 
 /**
  * Update invoice

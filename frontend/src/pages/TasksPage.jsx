@@ -116,6 +116,8 @@ function TasksPage() {
     );
   }
 
+
+
   return (
     <div className="p-6">
       {/* Header */}
@@ -178,7 +180,7 @@ function TasksPage() {
                     )}
                   </TableCell>
                   <TableCell className="text-muted-foreground">
-                    {task.Project?.name || '-'}
+                    {task.Project?.name || task.project?.name || '-'}
                   </TableCell>
                   <TableCell>
                     <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[task.status]}`}>

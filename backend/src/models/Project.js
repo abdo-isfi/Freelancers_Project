@@ -37,6 +37,10 @@ module.exports = (sequelize) => {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: true,
       },
+      day_rate: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: true,
+      },
       status: {
         type: DataTypes.ENUM("active", "paused", "finished"),
         allowNull: false,

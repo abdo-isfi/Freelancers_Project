@@ -74,10 +74,10 @@ function TimeEntryTable({ entries = [], onEdit }) {
               <TableCell className="text-muted-foreground">
                 {entry.description || 'No description'}
               </TableCell>
-              <TableCell className="font-medium">
+              <TableCell className="text-medium">
                 <div className="flex items-center">
                   <ClockIcon className="h-4 w-4 mr-1 text-muted-foreground" />
-                  {entry.duration?.toFixed(2)}h
+                  {entry.durationMinutes ? (entry.durationMinutes / 60).toFixed(2) : '0.00'}h
                 </div>
               </TableCell>
               <TableCell className="text-right">

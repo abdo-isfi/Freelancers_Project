@@ -96,6 +96,8 @@ function ProjectsPage() {
     );
   }
 
+
+
   return (
     <div className="p-6">
       {/* Header */}
@@ -158,7 +160,7 @@ function ProjectsPage() {
                     )}
                   </TableCell>
                   <TableCell className="text-muted-foreground">
-                    {project.Client?.name || '-'}
+                    {project.Client?.name || project.client?.name || '-'}
                   </TableCell>
                   <TableCell>
                     <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[project.status]}`}>
@@ -166,7 +168,15 @@ function ProjectsPage() {
                     </span>
                   </TableCell>
                   <TableCell className="text-muted-foreground">
-                    {project.budget ? formatCurrency(project.budget) : '-'}
+                    {project.fixedAmount 
+                      ? formatCurrency(project.fixedAmount) 
+                      : project.hourlyRate 
+                        ? `${formatCurrency(project.hourlyRate)}/hr` 
+                        : (project.dayRate || project.day_rate)
+                          ? `${formatCurrency(project.dayRate || project.day_rate)}/day`
+                          : project.budget 
+                            ? formatCurrency(project.budget) 
+                            : '-'}
                   </TableCell>
                   <TableCell className="text-muted-foreground">
                     {project.startDate ? formatDate(project.startDate) : '-'}

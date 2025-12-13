@@ -40,7 +40,29 @@ function TimeTrackingPage() {
     ? timeEntries.filter((entry) => entry.projectId === parseInt(filterProject))
     : timeEntries;
 
-  const totalHours = filteredEntries.reduce((sum, entry) => sum + (entry.duration || 0), 0);
+  // Calculate statistics
+  const calculateTotalHours = (entries) => {
+    return entries.reduce((sum, entry) => {
+      const minutes = parseFloat(entry.durationMinutes || 0);
+      return sum + (minutes / 60);
+    }, 0);
+  };
+
+  const totalHours = calculateTotalHours(filteredEntries);
+
+  const thisWeekHours = calculateTotalHours(
+    timeEntries.filter((entry) => {
+      const entryDate = new Date(entry.date);
+      const today = new Date();
+      const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay())); // Sunday
+      firstDayOfWeek.setHours(0, 0, 0, 0);
+      return entryDate >= firstDayOfWeek;
+    })
+  );
+
+  // Calculate unique days with entries to get better average
+  const uniqueDays = new Set(filteredEntries.map(e => new Date(e.date).toDateString())).size;
+  const averagePerDay = uniqueDays > 0 ? totalHours / uniqueDays : 0;
 
   return (
     <div className="page-container">
@@ -79,23 +101,13 @@ function TimeTrackingPage() {
         <div className="card">
           <p className="text-sm text-muted-foreground">{t('thisWeek')}</p>
           <p className="mt-1 text-2xl font-semibold text-foreground">
-            {timeEntries
-              .filter((entry) => {
-                const entryDate = new Date(entry.date);
-                const weekStart = new Date();
-                weekStart.setDate(weekStart.getDate() - weekStart.getDay());
-                weekStart.setHours(0, 0, 0, 0);
-                return entryDate >= weekStart;
-              })
-              .reduce((sum, entry) => sum + (entry.duration || 0), 0)
-              .toFixed(1)}
-            h
+            {thisWeekHours.toFixed(1)}h
           </p>
         </div>
         <div className="card">
           <p className="text-sm text-muted-foreground">{t('averagePerDay')}</p>
           <p className="mt-1 text-2xl font-semibold text-foreground">
-            {filteredEntries.length > 0 ? (totalHours / 7).toFixed(1) : '0.0'}h
+            {averagePerDay.toFixed(1)}h
           </p>
         </div>
       </div>

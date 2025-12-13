@@ -69,16 +69,21 @@ class InvoiceService {
     items,
     notes,
     currency,
+    tax,
+    discount,
   }) {
-    // Verify project belongs to user
-    const project = await Project.findOne({
-      where: { id: projectId, user_id: userId },
-    });
+    // Verify project belongs to user if provided
+    let project = null;
+    if (projectId) {
+      project = await Project.findOne({
+        where: { id: projectId, user_id: userId },
+      });
 
-    if (!project) {
-      const error = new Error('Project not found');
-      error.status = 404;
-      throw error;
+      if (!project) {
+        const error = new Error('Project not found');
+        error.status = 404;
+        throw error;
+      }
     }
 
     // Verify client belongs to user
@@ -103,18 +108,28 @@ class InvoiceService {
       throw error;
     }
 
-
-
-    // Calculate totals
+    // Calculate totals and sanitize items
     let subtotal = 0;
-    items.forEach((item) => {
-      subtotal += item.quantity * item.unitPrice;
+    const sanitizedItems = items.map(item => {
+      const quantity = parseFloat(item.quantity) || 0;
+      // Frontend sends 'rate', backend uses 'unitPrice' or fallback to 0
+      const unitPrice = parseFloat(item.unitPrice !== undefined ? item.unitPrice : (item.rate !== undefined ? item.rate : 0));
+      return {
+        description: item.description || 'Item',
+        quantity: quantity,
+        unitPrice: unitPrice,
+        total: quantity * unitPrice,
+      };
     });
 
-    const taxAmount = 0; // Can be configured
-    const totalAmount = subtotal + taxAmount;
+    sanitizedItems.forEach((item) => {
+      subtotal += item.total;
+    });
 
-    // Create invoice
+    const taxAmount = parseFloat(tax) || 0;
+    const discountAmount = parseFloat(discount) || 0;
+    const totalAmount = subtotal + taxAmount - discountAmount;
+
     // Create invoice
     const invoice = await Invoice.create({
       user_id: userId,
@@ -127,20 +142,18 @@ class InvoiceService {
       total_tva: taxAmount,
       total_ttc: totalAmount,
       currency: currency || 'EUR',
-      // notes is not in the model definition I saw, let's allow sequelize to ignore if extra or check model again?
-      // Model didn't show notes field!
     });
 
     // Create invoice items
     const createdItems = await Promise.all(
-      items.map((item) =>
+      sanitizedItems.map((item) =>
         InvoiceItem.create({
           invoice_id: invoice.id,
           description: item.description,
           quantity: item.quantity,
           unit_price: item.unitPrice,
-          total: item.quantity * item.unitPrice,
-          project_id: projectId, // Assuming items belong to the project selected for invoice?
+          total: item.total,
+          project_id: projectId || null,
         })
       )
     );
@@ -179,7 +192,7 @@ class InvoiceService {
 
     const mappedUpdates = {
       status: updates.status,
-      notes: updates.notes,
+      // notes: updates.notes, // Notes field does not exist on model
     };
 
     Object.keys(mappedUpdates).forEach((key) => {
@@ -261,8 +274,8 @@ class InvoiceService {
         unitPrice: parseFloat(item.unit_price),
         total: parseFloat(item.total),
       })) : [],
-      createdAt: invoice.created_at,
-      updatedAt: invoice.updated_at,
+      createdAt: invoice.createdAt,
+      updatedAt: invoice.updatedAt,
     };
   }
 }

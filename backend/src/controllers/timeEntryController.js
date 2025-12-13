@@ -29,6 +29,7 @@ const createTimeEntry = async (req, res, next) => {
     const {
       projectId,
       taskId,
+      date,
       startTime,
       endTime,
       description,
@@ -38,6 +39,7 @@ const createTimeEntry = async (req, res, next) => {
     const entry = await timeEntryService.createTimeEntry(userId, {
       projectId,
       taskId,
+      date,
       startTime,
       endTime,
       description,

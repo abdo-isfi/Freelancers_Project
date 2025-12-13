@@ -147,8 +147,8 @@ class ClientService {
       company: client.contact_name,
       address: client.billing_address,
       isActive: !client.is_archived,
-      createdAt: client.created_at,
-      updatedAt: client.updated_at,
+      createdAt: client.createdAt,
+      updatedAt: client.updatedAt,
       website,
     };
   }

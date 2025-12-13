@@ -96,6 +96,8 @@ function ClientsPage() {
     );
   }
 
+
+
   return (
     <div className="p-6">
       {/* Header */}
@@ -153,7 +155,7 @@ function ClientsPage() {
                   <TableCell className="text-muted-foreground">{client.phone || '-'}</TableCell>
                   <TableCell className="text-muted-foreground">{client.company || '-'}</TableCell>
                   <TableCell className="text-muted-foreground">
-                    {formatDate(client.createdAt)}
+                    {formatDate(client.createdAt || client.created_at)}
                   </TableCell>
                   <TableCell className="text-right">
                     <button

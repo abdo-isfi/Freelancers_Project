@@ -201,8 +201,12 @@ class TaskService {
       priority: task.priority,
       dueDate: task.due_date,
       estimatedHours: task.estimated_hours,
-      createdAt: task.created_at,
-      updatedAt: task.updated_at,
+      createdAt: task.createdAt,
+      updatedAt: task.updatedAt,
+      project: task.Project ? {
+        id: task.Project.id,
+        name: task.Project.name
+      } : null,
     };
   }
 }

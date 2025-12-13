@@ -56,7 +56,10 @@ function ProjectFormModal({ isOpen, onClose, project = null }) {
     // Force integer conversion to be safe
     const payload = {
         ...data,
-        clientId: data.clientId ? parseInt(data.clientId, 10) : null
+        clientId: data.clientId ? parseInt(data.clientId, 10) : null,
+        fixedAmount: data.billingType === 'fixed_price' ? data.budget : null,
+        hourlyRate: data.billingType === 'hourly' ? data.budget : null,
+        dayRate: data.billingType === 'day_rate' ? data.budget : null,
     };
 
     try {
